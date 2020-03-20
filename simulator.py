@@ -1,3 +1,4 @@
+
 import matplotlib
 import sys
 import matplotlib.pyplot as plt
@@ -38,7 +39,7 @@ def logistic_fn():
         days = np.append(days, day_counter)
         day_counter += 1
 
-def projection(next_days, cases, growth_factor):
+def projection(next_days, days_passed, cases, growth_factor):
     total_cases = 0
     counter = 0
     while (True):
@@ -52,10 +53,11 @@ def projection(next_days, cases, growth_factor):
     index = len(parsed_data[3]) - 1
     counter = 0
     avg_growth_factor = 0.0
-    while(counter < 4):
+    while(counter < days_passed):
         avg_growth_factor += parsed_data[3][index - counter]
         counter += 1
-    avg_growth_factor /= 6.0
+    avg_growth_factor /= days_passed
+    print('GF: ', avg_growth_factor)
     counter = 0
     while(counter < next_days):
         total_cases += total_cases * avg_growth_factor
@@ -69,8 +71,8 @@ def plot_graph(days, cases):
 #################################################################################
 
 np.set_printoptions(suppress=True)
-input_data = open(sys.argv[1])
-#input_data = open("peru_data.csv")    
+#input_data = open(sys.argv[1])
+input_data = open("peru_data.csv")    
 parsed_data = parse_file(input_data)
-projection(14, parsed_data[2], parsed_data[3])
+projection(13, 5, parsed_data[2], parsed_data[3])
 #plot_graph(parsed_data[0], parsed_data[2])
