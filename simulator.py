@@ -38,9 +38,8 @@ def logistic_fn(population):
     logistic_f = 1 - ((1.2 * current_cases) / population)
     while (day_counter < 90):
         days = np.append(days, day_counter)
-        logistic = np.append(logistic, logistic_f)
+        logistic = np.append(logistic, current_cases)
         current_cases = current_cases * 1.5
-
         day_counter += 1
     return (days, logistic)
 
