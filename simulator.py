@@ -67,7 +67,7 @@ def plot_graph_r(x, y):
     plt.plot(x, y, 'r', x, y, 'k')
 
 def print_data(days, dates, cases, growth_factor):
-    print("Day # \t Date \t Cases \t Growth Ratio")
+    print("Day # \t Date \t\t Cases \t Growth Ratio")
     for i in range(0, len(days)):
         print(days[i], '\t', dates[i], '\t', cases[i], '\t', growth_factor[i])
 
@@ -75,11 +75,11 @@ def print_data(days, dates, cases, growth_factor):
 
 np.set_printoptions(suppress=True)
 #input_data = open(sys.argv[1])
-input_data = open("peru_data.csv")    
+input_data = open("usa_data.csv")    
 parsed_data = parse_file(input_data)
-#print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
+print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
 projection(1, 3, parsed_data[2], parsed_data[3])
-logistic_data = logistic_fn(32843553)
+#logistic_data = logistic_fn(32843553)
 plot_graph_bo(parsed_data[0], parsed_data[2])
-plot_graph_r(logistic_data[0],logistic_data[1])
+#plot_graph_r(logistic_data[0],logistic_data[1])
 plt.show()
