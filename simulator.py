@@ -71,11 +71,14 @@ def print_data(days, dates, cases, growth_factor):
     for i in range(0, len(days)):
         print(days[i], '\t', dates[i], '\t', cases[i], '\t', growth_factor[i])
 
+def command_line():
+    print('>>')
+    
 #################################################################################
 
 np.set_printoptions(suppress=True)
 #input_data = open(sys.argv[1])
-input_data = open("usa_data.csv")    
+input_data = open("peru_data.csv")    
 parsed_data = parse_file(input_data)
 print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
 projection(1, 3, parsed_data[2], parsed_data[3])
