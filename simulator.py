@@ -4,11 +4,7 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
-'''
-if(len(sys.argv) != 2):
-    print("usage: python3 simulator.py [INPUT_DATA.csv]")
-    sys.exit(1)
-'''
+
 def parse_file(input_data):
     dates = np.asarray([])
     days = np.array([])
@@ -73,7 +69,6 @@ def print_data(days, dates, cases, growth_factor):
 
 def command_line():
     parsed_data = 0
-
     while(True):
         input_cmd = input(">> ")
         parsed_input = input_cmd.split()
@@ -82,9 +77,11 @@ def command_line():
             break
         if(parsed_input[0] == "load" and len(parsed_input) != 2):
             print("usage: load [FILE PATH]")
-        else:#(parsed_input[0] == 'read' and len(parsed_input) == 2):
+        else:
             try:
                 file = open(parsed_input[1])
+                parsed_data = parse_file(parsed_input[1])
+                file.close()
             except:
                 print(parsed_input[1], "is not accesible") 
         if(parsed_input[0] == "show" and parsed_data == 0):
