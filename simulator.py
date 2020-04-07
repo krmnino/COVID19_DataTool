@@ -77,17 +77,21 @@ def command_line():
             break
         if(parsed_input[0] == "load" and len(parsed_input) != 2):
             print("usage: load [FILE PATH]")
-        else:
+        elif(parsed_input[0] == "load" and len(parsed_input) == 2):
             try:
-                file = open(parsed_input[1])
-                parsed_data = parse_file(parsed_input[1])
-                file.close()
+                input_data = open(str(parsed_input[1]))
+                parsed_data = parse_file(input_data)
+                input_data.close()
+                print("Loaded data from", parsed_input[1])
             except:
                 print(parsed_input[1], "is not accesible") 
         if(parsed_input[0] == "show" and parsed_data == 0):
             print("data has not been loaded into memory")
-        else:
+        elif(parsed_input[0] == "show" and parsed_data != 0):
             print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
+        if(parsed_input[0] == "delete"):
+            parsed_data = 0
+        
 
     
 #################################################################################
