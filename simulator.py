@@ -42,11 +42,11 @@ def logistic_fn(population):
 def projection(next_days, days_passed, cases, growth_factor):
     total_cases = cases[len(cases)-1]
     counter = 0
-    index = len(parsed_data[3]) - 1
+    index = len(growth_factor) - 1
     counter = 0
     avg_growth_factor = 0.0
     while(counter < days_passed):
-        avg_growth_factor += parsed_data[3][index - counter]
+        avg_growth_factor += growth_factor[index - counter]
         counter += 1
     avg_growth_factor /= days_passed
     print('Avg Growth Factor (past', days_passed ,'days):', avg_growth_factor)
@@ -58,9 +58,11 @@ def projection(next_days, days_passed, cases, growth_factor):
 
 def plot_graph_bo(x, y):
     plt.plot(x, y, 'bo', x, y, 'k')
+    plt.show()
 
 def plot_graph_r(x, y):
     plt.plot(x, y, 'r', x, y, 'k')
+    plt.show()
 
 def print_data(days, dates, cases, growth_factor):
     print("Day # \t Date \t\t Cases \t\t Growth Ratio")
@@ -91,13 +93,24 @@ def command_line():
             print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
         if(parsed_input[0] == "delete"):
             parsed_data = 0
+        if(parsed_input[0] == "projection" and parsed_data == 0):
+            print("data has not been loaded into memory")
+        elif(parsed_input[0] == "projection" and len(parsed_input) != 3):
+            print("usage: projection [next_days] [avg_previous_days]")
+        elif(parsed_input[0] == "projection" and len(parsed_input) == 3 and parsed_data != 0):
+            projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data[2], parsed_data[3])
+        if(parsed_input[0] == "plot" and parsed_data == 0):
+            print("data has not been loaded into memory")
+        elif(parsed_input[0] == "plot" and parsed_data != 0):
+            plot_graph_bo(parsed_data[0], parsed_data[2])
+            
         
 
     
 #################################################################################
 
 np.set_printoptions(suppress=True)
-'''
+
 #input_data = open(sys.argv[1])
 input_data = open("peru_data.csv")    
 parsed_data = parse_file(input_data)
@@ -107,5 +120,5 @@ projection(1, 3, parsed_data[2], parsed_data[3])
 plot_graph_bo(parsed_data[0], parsed_data[2])
 #plot_graph_r(logistic_data[0],logistic_data[1])
 plt.show()
-'''
-command_line()
+
+#command_line()
