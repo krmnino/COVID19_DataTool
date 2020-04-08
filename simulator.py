@@ -74,9 +74,16 @@ def command_line():
     while(True):
         input_cmd = input(">> ")
         parsed_input = input_cmd.split()
-        if(parsed_input[0] == 'q'):
+        if(parsed_input[0] == 'exit'):
             print("Exiting...")
             break
+        if(parsed_input[0] == 'help'):
+            print('usage manual:')
+            print('load [FILE]                                      load data set in memory')
+            print('show                                             displays loaded data set')
+            print('delete                                           erase data set loaded in memory')
+            print('projection [next_days] [avg_previous_days]       show projection for the next x days using avg growth factor from y previous days')
+            print('plot                                             display graph of loaded data')
         if(parsed_input[0] == "load" and len(parsed_input) != 2):
             print("usage: load [FILE PATH]")
         elif(parsed_input[0] == "load" and len(parsed_input) == 2):
@@ -102,15 +109,13 @@ def command_line():
         if(parsed_input[0] == "plot" and parsed_data == 0):
             print("data has not been loaded into memory")
         elif(parsed_input[0] == "plot" and parsed_data != 0):
-            plot_graph_bo(parsed_data[0], parsed_data[2])
-            
+            plot_graph_bo(parsed_data[0], parsed_data[2])  
         
-
     
 #################################################################################
 
 np.set_printoptions(suppress=True)
-
+'''
 #input_data = open(sys.argv[1])
 input_data = open("peru_data.csv")    
 parsed_data = parse_file(input_data)
@@ -120,5 +125,5 @@ projection(1, 3, parsed_data[2], parsed_data[3])
 plot_graph_bo(parsed_data[0], parsed_data[2])
 #plot_graph_r(logistic_data[0],logistic_data[1])
 plt.show()
-
-#command_line()
+'''
+command_line()
