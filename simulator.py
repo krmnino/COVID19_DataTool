@@ -56,12 +56,8 @@ def projection(next_days, days_passed, cases, growth_factor):
         counter += 1
     print("Prediction # of cases in the next", next_days, "days:", total_cases)
 
-def plot_graph_bo(x, y):
-    plt.plot(x, y, 'bo', x, y, 'k')
-    plt.show()
-
-def plot_graph_r(x, y):
-    plt.plot(x, y, 'r', x, y, 'k')
+def plot_graph(x, y, color):
+    plt.plot(x, y, 'ko', x, y, color)
     plt.show()
 
 def print_data(days, dates, cases, growth_factor):
@@ -84,8 +80,11 @@ def command_line():
             print('delete                                           erase data set loaded in memory')
             print('projection [next_days] [avg_previous_days]       show projection for the next x days using avg growth factor from y previous days')
             print('plot                                             display graph of loaded data')
+            continue
+
         if(parsed_input[0] == "load" and len(parsed_input) != 2):
             print("usage: load [FILE PATH]")
+            continue
         elif(parsed_input[0] == "load" and len(parsed_input) == 2):
             try:
                 input_data = open(str(parsed_input[1]))
@@ -93,37 +92,48 @@ def command_line():
                 input_data.close()
                 print("Loaded data from", parsed_input[1])
             except:
-                print(parsed_input[1], "is not accesible") 
+                print(parsed_input[1], "is not accesible")
+            continue
+                
         if(parsed_input[0] == "show" and parsed_data == 0):
             print("data has not been loaded into memory")
+            continue
         elif(parsed_input[0] == "show" and parsed_data != 0):
             print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
+            continue
+        
         if(parsed_input[0] == "delete"):
             parsed_data = 0
+            continue
+
         if(parsed_input[0] == "projection" and parsed_data == 0):
             print("data has not been loaded into memory")
+            continue
         elif(parsed_input[0] == "projection" and len(parsed_input) != 3):
             print("usage: projection [next_days] [avg_previous_days]")
+            continue
         elif(parsed_input[0] == "projection" and len(parsed_input) == 3 and parsed_data != 0):
             projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data[2], parsed_data[3])
-        if(parsed_input[0] == "plot" and parsed_data == 0):
+            continue
+
+        if(parsed_input[0] == "plot_cases" and parsed_data == 0):
             print("data has not been loaded into memory")
-        elif(parsed_input[0] == "plot" and parsed_data != 0):
-            plot_graph_bo(parsed_data[0], parsed_data[2])  
+            continue
+        elif(parsed_input[0] == "plot_cases" and parsed_data != 0):
+            plot_graph(parsed_data[0], parsed_data[2], 'b')
+            continue
+
+        if(parsed_input[0] == "plot_growth" and parsed_data == 0):
+            print("data has not been loaded into memory")
+            continue
+        elif(parsed_input[0] == "plot_growth" and parsed_data != 0):
+            plot_graph(parsed_data[0], parsed_data[3], 'k')  
+            continue
+        else:
+            print('Invalid input. For instructions type "help".')
         
     
 #################################################################################
 
 np.set_printoptions(suppress=True)
-'''
-#input_data = open(sys.argv[1])
-input_data = open("peru_data.csv")    
-parsed_data = parse_file(input_data)
-print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
-projection(1, 3, parsed_data[2], parsed_data[3])
-#logistic_data = logistic_fn(32843553)
-plot_graph_bo(parsed_data[0], parsed_data[2])
-#plot_graph_r(logistic_data[0],logistic_data[1])
-plt.show()
-'''
 command_line()
