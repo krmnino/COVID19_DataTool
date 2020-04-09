@@ -101,6 +101,17 @@ def command_line():
         elif(parsed_input[0] == "show" and parsed_data != 0):
             print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
             continue
+
+        if(parsed_input[0] == "show_all" and parsed_data == 0):
+            print("data has not been loaded into memory")
+            continue
+        elif(parsed_input[0] == "projection" and len(parsed_input) != 3):
+            print("usage: show_all [next_days] [avg_previous_days]")
+            continue
+        elif(parsed_input[0] == "show_all" and parsed_data != 0):
+            print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
+            projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data[2], parsed_data[3])
+            continue
         
         if(parsed_input[0] == "delete"):
             parsed_data = 0
