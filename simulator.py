@@ -1,5 +1,7 @@
 from math import e
 import matplotlib
+import os
+import platform
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
@@ -70,7 +72,7 @@ def command_line():
     while(True):
         input_cmd = input(">> ")
         parsed_input = input_cmd.split()
-        if(parsed_input[0] == 'exit'):
+        if(parsed_input[0] == "exit"):
             print("Exiting...")
             break
         if(parsed_input[0] == 'help'):
@@ -142,6 +144,13 @@ def command_line():
             plot_graph(parsed_data[0], parsed_data[3], 'k')  
             continue
         if(parsed_input[0] == "clear"):
+            if(platform.system() == "Windows"):
+                clear = lambda: os.system("cls")
+                clear()
+                continue
+            elif(platform.system() == "Linux"):
+                clear = lambda: os.system("clear")
+                continue
             continue
         else:
             print('Invalid input. For instructions type "help".')
