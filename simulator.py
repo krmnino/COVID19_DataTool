@@ -79,7 +79,8 @@ def command_line():
             print('show                                             displays loaded data set')
             print('delete                                           erase data set loaded in memory')
             print('projection [next_days] [avg_previous_days]       show projection for the next x days using avg growth factor from y previous days')
-            print('plot                                             display graph of loaded data')
+            print('plot_cases                                       display cases graph')
+            print('plot_growth                                      display cases graph')
             continue
 
         if(parsed_input[0] == "load" and len(parsed_input) != 2):
@@ -105,7 +106,7 @@ def command_line():
         if(parsed_input[0] == "show_all" and parsed_data == 0):
             print("data has not been loaded into memory")
             continue
-        elif(parsed_input[0] == "projection" and len(parsed_input) != 3):
+        elif(parsed_input[0] == "show_all" and len(parsed_input) != 3):
             print("usage: show_all [next_days] [avg_previous_days]")
             continue
         elif(parsed_input[0] == "show_all" and parsed_data != 0):
@@ -139,6 +140,8 @@ def command_line():
             continue
         elif(parsed_input[0] == "plot_growth" and parsed_data != 0):
             plot_graph(parsed_data[0], parsed_data[3], 'k')  
+            continue
+        if(parsed_input[0] == "clear"):
             continue
         else:
             print('Invalid input. For instructions type "help".')
