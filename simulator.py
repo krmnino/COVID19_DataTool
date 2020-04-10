@@ -145,11 +145,10 @@ def command_line():
             continue
         if(parsed_input[0] == "clear"):
             if(platform.system() == "Windows"):
-                clear = lambda: os.system("cls")
-                clear()
+                os.system("cls")
                 continue
             elif(platform.system() == "Linux"):
-                clear = lambda: os.system("clear")
+                os.system("clear")
                 continue
             continue
         else:
