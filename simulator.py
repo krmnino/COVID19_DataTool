@@ -60,6 +60,13 @@ def projection(next_days, days_passed, cases, growth_factor):
 
 def plot_graph(x, y, color):
     plt.plot(x, y, 'ko', x, y, color)
+    plt.grid()
+    plt.show()
+
+def plot_graph_log(x, y, color):
+    plt.plot(x, y, 'ko', x, y, color)
+    plt.yscale('log')
+    plt.grid()
     plt.show()
 
 def print_data(days, dates, cases, growth_factor):
@@ -137,11 +144,18 @@ def command_line():
             plot_graph(parsed_data[0], parsed_data[2], 'b')
             continue
 
+        if(parsed_input[0] == "plot_cases_log" and parsed_data == 0):
+            print("data has not been loaded into memory")
+            continue
+        elif(parsed_input[0] == "plot_cases_log" and parsed_data != 0):
+            plot_graph_log(parsed_data[0], parsed_data[2], 'b')
+            continue
+
         if(parsed_input[0] == "plot_growth" and parsed_data == 0):
             print("data has not been loaded into memory")
             continue
         elif(parsed_input[0] == "plot_growth" and parsed_data != 0):
-            plot_graph(parsed_data[0], parsed_data[3], 'k')  
+            plot_graph(parsed_data[0][3:], parsed_data[3][3:], 'k')  
             continue
         if(parsed_input[0] == "clear"):
             if(platform.system() == "Windows"):
