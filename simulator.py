@@ -158,9 +158,24 @@ def command_line():
         if(parsed_input[0] == "plot_growth" and parsed_data == 0):
             print("data has not been loaded into memory")
             continue
-        elif(parsed_input[0] == "plot_growth" and parsed_data != 0):
-            plot_graph(parsed_data[0][3:], parsed_data[3][3:], 'k', "Days", "Growth Ratio (%)")  
+        elif(parsed_input[0] == "plot_growth" and parsed_data != 0 and len(parsed_input) == 1):
+            plot_graph(parsed_data[0], parsed_data[3], 'k', "Days", "Growth Ratio (%)")  
             continue
+        elif(parsed_input[0] == "plot_growth" and len(parsed_input) != 3):
+            print(len(parsed_input))
+            print("usage: plot_growth [from day] [to_day]")
+            continue
+        elif(parsed_input[0] == "plot_growth" and int(parsed_input[2]) > parsed_data[0][len(parsed_data[0]) - 1]):
+            print("range of days is invalid, starting day must be less than ending day")
+            continue
+        elif(parsed_input[0] == "plot_growth" and int(parsed_input[1]) > int(parsed_input[2])):
+            print("range of days is invalid, starting day must be less than ending day")
+            continue
+        elif(parsed_input[0] == "plot_growth" and parsed_data != 0):
+            plot_graph(parsed_data[0][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                parsed_data[3][int(parsed_input[1]):int(parsed_input[2]) + 1], 'k', "Days", "Growth Ratio (%)")  
+            continue
+
         if(parsed_input[0] == "clear"):
             if(platform.system() == "Windows"):
                 os.system("cls")
@@ -171,7 +186,6 @@ def command_line():
             continue
         else:
             print('Invalid input. For instructions type "help".')
-        
     
 #################################################################################
 
