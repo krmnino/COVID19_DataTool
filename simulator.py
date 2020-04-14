@@ -92,7 +92,8 @@ def command_line():
             print('projection [next_days] [avg_previous_days]       show projection for the next x days using avg growth factor from y previous days')
             print('plot_cases                                       display cases graph')
             print('plot_cases_log                                   display cases in a logarithmic graph')
-            print('plot_growth                                      display cases graph')
+            print('plot_growth                                      display growth rate graph')
+            print('plot_growth [from_day][to_day]                   display growth rate graph from a range of days')
             print('clear                                            clears the console')
             continue
 
@@ -163,7 +164,8 @@ def command_line():
             continue
         elif(parsed_input[0] == "plot_growth" and len(parsed_input) != 3):
             print(len(parsed_input))
-            print("usage: plot_growth [from day] [to_day]")
+            print("usage: plot_growth")
+            print("       plot_growth [from day] [to_day]")
             continue
         elif(parsed_input[0] == "plot_growth" and int(parsed_input[2]) > parsed_data[0][len(parsed_data[0]) - 1]):
             print("range of days is invalid, starting day must be less than ending day")
