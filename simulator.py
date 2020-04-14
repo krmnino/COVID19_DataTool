@@ -58,8 +58,10 @@ def projection(next_days, days_passed, cases, growth_factor):
         counter += 1
     print("Prediction # of cases in the next", next_days, "days:", total_cases)
 
-def plot_graph(x, y, color):
+def plot_graph(x, y, color, x_label, y_label):
     plt.plot(x, y, 'ko', x, y, color)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
     plt.grid()
     plt.show()
 
@@ -89,7 +91,9 @@ def command_line():
             print('delete                                           erase data set loaded in memory')
             print('projection [next_days] [avg_previous_days]       show projection for the next x days using avg growth factor from y previous days')
             print('plot_cases                                       display cases graph')
+            print('plot_cases_log                                   display cases in a logarithmic graph')
             print('plot_growth                                      display cases graph')
+            print('clear                                            clears the console')
             continue
 
         if(parsed_input[0] == "load" and len(parsed_input) != 2):
@@ -141,7 +145,7 @@ def command_line():
             print("data has not been loaded into memory")
             continue
         elif(parsed_input[0] == "plot_cases" and parsed_data != 0):
-            plot_graph(parsed_data[0], parsed_data[2], 'b')
+            plot_graph(parsed_data[0], parsed_data[2], 'b', "Days", "Cases")
             continue
 
         if(parsed_input[0] == "plot_cases_log" and parsed_data == 0):
@@ -155,7 +159,7 @@ def command_line():
             print("data has not been loaded into memory")
             continue
         elif(parsed_input[0] == "plot_growth" and parsed_data != 0):
-            plot_graph(parsed_data[0][3:], parsed_data[3][3:], 'k')  
+            plot_graph(parsed_data[0][3:], parsed_data[3][3:], 'k', "Days", "Growth Ratio (%)")  
             continue
         if(parsed_input[0] == "clear"):
             if(platform.system() == "Windows"):
