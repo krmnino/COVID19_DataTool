@@ -25,7 +25,7 @@ def parse_file(input_data):
         cases = np.append(cases, num)
         if(day_counter > 1):
             growth_factor = np.append(growth_factor, (num / cases[day_counter - 1]))
-        day_counter += 1        
+        day_counter += 1    
     return (days, dates, cases, growth_factor)
 
 def logistic_fn(population):
