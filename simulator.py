@@ -16,7 +16,7 @@ def parse_file(input_data):
     for line in input_data:
         date = line.split(',')[0]
         num = line.split(',')[1][:line.split(',')[1].find('\n')]
-        if(num is not ''):
+        if(num != ''):
             num = int(num)
         else:
             num = -1
@@ -25,7 +25,7 @@ def parse_file(input_data):
         cases = np.append(cases, num)
         if(day_counter > 1):
             growth_factor = np.append(growth_factor, (num / cases[day_counter - 1]))
-        day_counter += 1    
+        day_counter += 1        
     return (days, dates, cases, growth_factor)
 
 def logistic_fn(population):
@@ -65,9 +65,11 @@ def plot_graph(x, y, color, x_label, y_label):
     plt.grid()
     plt.show()
 
-def plot_graph_log(x, y, color):
+def plot_graph_log(x, y, color, x_label, y_label):
     plt.plot(x, y, 'ko', x, y, color)
     plt.yscale('log')
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
     plt.grid()
     plt.show()
 
@@ -153,7 +155,7 @@ def command_line():
             print("data has not been loaded into memory")
             continue
         elif(parsed_input[0] == "plot_cases_log" and parsed_data != 0):
-            plot_graph_log(parsed_data[0], parsed_data[2], 'b')
+            plot_graph_log(parsed_data[0], parsed_data[2], 'b', "Days", "Cases")
             continue
 
         if(parsed_input[0] == "plot_growth" and parsed_data == 0):
