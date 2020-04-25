@@ -14,6 +14,8 @@ def parse_file(input_data):
     growth_factor = np.array([0, 1])
     day_counter = 0
     for line in input_data:
+        if(line == '\n'):
+            break
         date = line.split(',')[0]
         num = line.split(',')[1][:line.split(',')[1].find('\n')]
         if(num != ''):
