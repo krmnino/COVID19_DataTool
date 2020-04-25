@@ -42,8 +42,9 @@ def logistic_fn(population):
     return (days, logistic)
 
 def difference(parsed_data, day1, day2):
-    for col in parsed_data:
-        print(col)
+    print("\u0394Days:\t\t", parsed_data[0][day2] - parsed_data[0][day1])
+    print("\u0394Cases:\t\t", parsed_data[2][day2] - parsed_data[2][day1])
+    print("\u0394Growth Ratio:\t", parsed_data[3][day2] - parsed_data[3][day1])
 
 def projection(next_days, days_passed, cases, growth_factor):
     total_cases = cases[len(cases)-1]
@@ -154,6 +155,13 @@ def command_line():
             if(len(parsed_input) != 3):
                 print("usage: diff [from_day] [to_day]")
                 continue
+            elif(int(parsed_input[1]) > parsed_data[0][len(parsed_data[0]) - 1] or \
+                 int(parsed_input[2]) > parsed_data[0][len(parsed_data[0]) - 1]):
+                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
+                continue
+            elif(int(parsed_input[1]) > int(parsed_input[2])):
+                print("range of days is invalid, starting day must be less than ending day")
+                continue
             else:
                 difference(parsed_data, int(parsed_input[1]), int(parsed_input[2]))
                 continue
@@ -183,10 +191,10 @@ def command_line():
                 print("usage: plot_growth")
                 print("       plot_growth [from day] [to_day]")
                 continue
-            elif(parsed_input[0] == "plot_growth" and int(parsed_input[2]) > parsed_data[0][len(parsed_data[0]) - 1]):
-                print("range of days is invalid, starting day must be less than ending day")
+            elif(int(parsed_input[2]) > parsed_data[0][len(parsed_data[0]) - 1]):
+                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
                 continue
-            elif(parsed_input[0] == "plot_growth" and int(parsed_input[1]) > int(parsed_input[2])):
+            elif(int(parsed_input[1]) > int(parsed_input[2])):
                 print("range of days is invalid, starting day must be less than ending day")
                 continue
             else:
