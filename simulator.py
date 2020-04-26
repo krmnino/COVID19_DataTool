@@ -87,26 +87,31 @@ def print_data(days, dates, cases, growth_factor):
 
 def command_line():
     parsed_data = 0
-    instructions = ['load', 'show', 'delete', ]
+    instructions = ['load', 'show', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_growth', 'clear', 'exit']
     while(True):
         input_cmd = input('>> ')
         parsed_input = input_cmd.split()
+        if(len(parsed_input) == 0):
+            continue
+        if(parsed_input[0] not in instructions):
+            print('Invalid command. Type "help" for instructions.')
+            continue
         if(parsed_input[0] == 'exit'):
             print('Exiting...')
             break
         if(parsed_input[0] == 'help'):
             print('usage manual:')
-            print('load [FILE]                                      load data set in memory')
-            print('show                                             displays loaded data set')
-            print('show_all [next_days] [avg_previous_days]         displays loaded data set and projection')
-            print('delete                                           erase data set loaded in memory')
-            print('diff                                             shows difference of values between 2 days')
-            print('projection [next_days] [avg_previous_days]       show projection for the next x days using avg growth factor from y previous days')
-            print('plot_cases                                       display cases graph')
-            print('plot_cases_log                                   display cases in a logarithmic graph')
-            print('plot_growth                                      display growth rate graph')
-            print('plot_growth [from_day][to_day]                   display growth rate graph from a range of days')
-            print('clear                                            clears the console')
+            print('load [FILE]                                      Load data set in memory')
+            print('show                                             Displays loaded data set')
+            print('show_all [next_days] [avg_previous_days]         Displays loaded data set and projection')
+            print('delete                                           Erase data set loaded in memory')
+            print('diff                                             Shows difference of values between 2 days')
+            print('projection [next_days] [avg_previous_days]       Show projection for the next x days using avg growth factor from y previous days')
+            print('plot_cases                                       Display cases graph')
+            print('plot_cases_log                                   Display cases in a logarithmic graph')
+            print('plot_growth                                      Display growth rate graph')
+            print('plot_growth [from_day][to_day]                   Display growth rate graph from a range of days')
+            print('clear                                            Clears the console')
             continue
 
         if(parsed_input[0] == "clear"):
@@ -120,7 +125,7 @@ def command_line():
 
         if(parsed_input[0] == 'load'):
             if(len(parsed_input) != 2):
-                print("usage: load [FILE PATH]")
+                print("Usage: load [FILE PATH]")
                 continue
             else:
                 try:
@@ -137,7 +142,7 @@ def command_line():
             continue
 
         if(parsed_data == 0):
-            print('data has not been loaded into memory')
+            print('Data has not been loaded into memory')
             continue
 
         if(parsed_input[0] == 'show'):
@@ -146,7 +151,7 @@ def command_line():
 
         if(parsed_input[0] == 'show_all'):
             if(len(parsed_input) != 3):
-                print("usage: show_all [next_days] [avg_previous_days]")
+                print("Usage: show_all [next_days] [avg_previous_days]")
                 continue
             else:
                 print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
@@ -157,12 +162,15 @@ def command_line():
             if(len(parsed_input) != 3):
                 print("usage: diff [from_day] [to_day]")
                 continue
+            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
+                print("Days must be integers. Ranging 0 -", parsed_data[0][len(parsed_data[0]) - 1])
+                continue
             elif(int(parsed_input[1]) > parsed_data[0][len(parsed_data[0]) - 1] or \
                  int(parsed_input[2]) > parsed_data[0][len(parsed_data[0]) - 1]):
-                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
+                print("Range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
                 continue
             elif(int(parsed_input[1]) > int(parsed_input[2])):
-                print("range of days is invalid, starting day must be less than ending day")
+                print("Range of days is invalid, starting day must be less than ending day")
                 continue
             else:
                 difference(parsed_data, int(parsed_input[1]), int(parsed_input[2]))
@@ -170,7 +178,7 @@ def command_line():
 
         if(parsed_input[0] == 'projection'):
             if(len(parsed_input) != 3):
-                print("usage: projection [next_days] [avg_previous_days]")
+                print("Usage: projection [next_days] [avg_previous_days]")
                 continue
             else:
                 projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data[2], parsed_data[3])
@@ -190,14 +198,17 @@ def command_line():
                 continue
             elif(len(parsed_input) != 3):
                 print(len(parsed_input))
-                print("usage: plot_growth")
+                print("Usage: plot_growth")
                 print("       plot_growth [from day] [to_day]")
+                continue
+            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
+                print("Days must be integers. Ranging 0 -", parsed_data[0][len(parsed_data[0]) - 1])
                 continue
             elif(int(parsed_input[2]) > parsed_data[0][len(parsed_data[0]) - 1]):
                 print("range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
                 continue
             elif(int(parsed_input[1]) > int(parsed_input[2])):
-                print("range of days is invalid, starting day must be less than ending day")
+                print("Range of days is invalid, starting day must be less than ending day")
                 continue
             else:
                 plot_graph(parsed_data[0][int(parsed_input[1]):int(parsed_input[2]) + 1], \
