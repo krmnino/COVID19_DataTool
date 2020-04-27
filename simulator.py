@@ -87,7 +87,7 @@ def print_data(days, dates, cases, growth_factor):
 
 def command_line():
     parsed_data = 0
-    instructions = ['load', 'show', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_growth', 'clear', 'exit']
+    instructions = ['load', 'show', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_growth', 'clear', 'exit', 'help']
     while(True):
         input_cmd = input('>> ')
         parsed_input = input_cmd.split()
@@ -112,6 +112,8 @@ def command_line():
             print('plot_growth                                      Display growth rate graph')
             print('plot_growth [from_day][to_day]                   Display growth rate graph from a range of days')
             print('clear                                            Clears the console')
+            print('help                                             Display program manual')
+            print('exit                                             Exit the program')
             continue
 
         if(parsed_input[0] == "clear"):
