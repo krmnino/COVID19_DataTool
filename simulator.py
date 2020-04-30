@@ -87,7 +87,7 @@ def print_data(days, dates, cases, growth_factor):
 
 def command_line():
     parsed_data = 0
-    instructions = ['load', 'show', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_growth', 'clear', 'exit', 'help']
+    instructions = ['load', 'show', 'show_all', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_growth', 'clear', 'exit', 'help']
     while(True):
         input_cmd = input('>> ')
         parsed_input = input_cmd.split()
@@ -216,7 +216,7 @@ def command_line():
                 plot_graph(parsed_data[0][int(parsed_input[1]):int(parsed_input[2]) + 1], \
                     parsed_data[3][int(parsed_input[1]):int(parsed_input[2]) + 1], 'k', "Days", "Growth Ratio (%)")  
                 continue
-        print('Invalid input. For instructions type "help".')
+        print('Invalid input. For instructions  type "help".')
         
     
 #################################################################################
