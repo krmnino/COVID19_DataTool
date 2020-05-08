@@ -3,9 +3,9 @@ import requests
 from datetime import date
 
 
-def get_ISO_codes(path):
-    input_data = open('fetch/data.csv')
-    iso_codes = open('fetch/countries_iso_codes.csv')
+def get_ISO_codes(raw_data_path, iso_path):
+    input_data = open(raw_data_path)
+    iso_codes = open(iso_path)
     for i, line in enumerate(input_data):
         if(i == 0):
             continue
@@ -24,10 +24,10 @@ def fetch_data():
     out.write(req_data)
     out.close()
 
-def backup_prev_data():
+def backup_prev_data(raw_data_path):
     today = date.today().strftime('_%Y-%m-%d_%H-%M-%S')
     backup_data = open('backups/backup' + today + '.csv', 'w')
-    raw_data = open('fetch/data.csv')
+    raw_data = open(raw_data_path)
     for line in raw_data:
         backup_data.write(line)
     raw_data.close()
