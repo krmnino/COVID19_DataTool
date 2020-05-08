@@ -15,6 +15,7 @@ def compartimentalize(raw_data_path, data_path):
             country_iso = parsed_line[0]
             single_country = []
             all_countries.append(single_country)
+            single_country.append([parsed_line[0], parsed_line[2], parsed_line[3], parsed_line[5], parsed_line[11]])
         else:
             single_country.append([parsed_line[0], parsed_line[2], parsed_line[3], parsed_line[5], parsed_line[11]])
     input_data.close()
@@ -50,8 +51,6 @@ def update_all(raw_data_path, data_path):
             print(data_path + '/' + data_directory_names[i])
             country_src = open(data_path + '/' + data_directory_names[i], 'r+')
             country_data = []
-            if(name == 'COL.csv'):
-                print('COLOMBIA')
             for j, line in enumerate(country_src):
                 if(line.split(',')[0] != '\n'):
                     country_data.append(line.split(','))
@@ -74,5 +73,28 @@ def update_all(raw_data_path, data_path):
                 out_new_country.write(line[0] + ',' + line[1] + ',' + line[2] + ',' + line[3] + ',\n')
             out_new_country.close()
 
-
-
+def update_single(raw_data_path, data_path):
+    iso_code = data_path[data_path.find('/') + 1:data_path.find('.')]
+    data_src = open(raw_data_path)
+    country_src = open(data_path)
+    new_country_data = []
+    old_country_data = []
+    for line in data_src:
+        parsed_line = line.split(',')
+        if(parsed_line[0] == iso_code):
+            new_country_data.append([parsed_line[2], parsed_line[3], parsed_line[5], parsed_line[11]])
+    for line in country_src:
+        if(line.split(',')[0] != '\n'):
+            old_country_data.append(line.split(','))
+    if(len(old_country_data) < len(new_country_data)):
+        index = len(old_country_data)
+        while(index < len(new_country_data)):
+            old_country_data.append(new_country_data[index])
+            index += 1
+        country_src.seek(0)
+        country_src.truncate()
+        for line in old_country_data:
+            country_src.write(line[0] + ',' + line[1] + ',' + line[2] + ',' + line[3] + ',\n')
+    data_src.close()
+    country_src.close()
+    
