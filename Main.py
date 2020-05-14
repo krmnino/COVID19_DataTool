@@ -60,11 +60,15 @@ def command_line():
             else:
                 try:
                     input_data = open(str(parsed_input[1]))
-                    parsed_data = parse_file(input_data)
-                    input_data.close()
-                    print("Loaded data from", parsed_input[1])
                 except:
                     print(parsed_input[1], "is not accesible")
+                    continue
+                input_data = open(str(parsed_input[1]))
+                parsed_data = parse_file(input_data)
+                input_data.close()
+                if(parsed_data != 0):
+                    print("Loaded data from", parsed_input[1])
+                    print(parsed_data)
                 continue
 
         if(parsed_input[0] == 'delete'):

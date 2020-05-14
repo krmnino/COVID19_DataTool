@@ -2,26 +2,25 @@ import numpy as np
 
 def parse_file(input_data):
     dates = np.asarray([])
-    days = np.array([])
     cases = np.array([])
-    growth_factor = np.array([0, 1])
+    deaths = np.array([])
+    tests = np.array([])
     day_counter = 0
     for i, line in enumerate(input_data):
         if(i == 0):
-            header = line.split(',')
             continue
         if(line == '\n'):
             break
-        date = line.split(',')[0]
-        num = line.split(',')[1][:line.split(',')[1].find('\n')]
-        if(num != ''):
-            num = int(num)
-        else:
-            num = -1
-        dates = np.append(dates, date)
-        days = np.append(days, day_counter)
-        cases = np.append(cases, num)
-        if(day_counter > 1):
-            growth_factor = np.append(growth_factor, (num / cases[day_counter - 1]))
-        day_counter += 1        
-    return (days, dates, cases, growth_factor)
+        parsed_line = line.split(',')
+        try: 
+            int(parsed_line[1])
+            int(parsed_line[2])
+            int(parsed_line[3])
+        except:
+            print('Data contains invalid data. Cannot convert string to integer.')
+            return 0
+        dates = np.append(dates, parsed_line[0])
+        cases = np.append(cases, int(parsed_line[1]))
+        deaths = np.append(deaths, int(parsed_line[2]))
+        tests = np.append(tests, int(parsed_line[3]))
+    return [dates, cases, deaths, tests]
