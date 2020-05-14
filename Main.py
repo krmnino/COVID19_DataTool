@@ -3,6 +3,7 @@ from Operations import difference
 from Operations import print_data
 from Operations import plot_graph
 from Operations import projection
+from Operations import compute_data
 from Operations import plot_graph_log
 
 import os
@@ -13,6 +14,9 @@ import csv
 
 
 def command_line():
+    os.system("mode con cols=150")
+    np.set_printoptions(suppress=True)
+    header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Tests', 'New Tests', '%\u0394 Tests']
     parsed_data = 0
     instructions = ['load', 'show', 'show_all', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_growth', 'clear', 'exit', 'help', 'csv_format']
     while(True):
@@ -67,8 +71,8 @@ def command_line():
                 parsed_data = parse_file(input_data)
                 input_data.close()
                 if(parsed_data != 0):
-                    print("Loaded data from", parsed_input[1])
-                    print(parsed_data)
+                    parsed_data = compute_data(parsed_data)
+                    print("Loaded and computed data from", parsed_input[1])
                 continue
 
         if(parsed_input[0] == 'delete'):
@@ -80,7 +84,7 @@ def command_line():
             continue
 
         if(parsed_input[0] == 'show'):
-            print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
+            print_data(header_fields, parsed_data)
             continue
 
         if(parsed_input[0] == 'show_all'):
@@ -156,5 +160,6 @@ def command_line():
         print('Invalid input. For instructions  type "help".')
         
 #################################################################################################################################
+
 
 command_line()
