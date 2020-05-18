@@ -72,8 +72,9 @@ def projection(next_days, days_passed, cases, growth_factor):
         counter += 1
     print("Prediction # of cases in the next", next_days, "days:", total_cases)
 
-def plot_graph(x, y, color, x_label, y_label):
+def plot_graph(x, y, color, x_label, y_label, chart_title):
     plt.plot(x, y, 'ko', x, y, color)
+    plt.title(chart_title)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.grid()

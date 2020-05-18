@@ -10,6 +10,7 @@ import os
 import platform
 import sys
 import numpy as np
+from datetime import date
 import csv
 
 
@@ -128,7 +129,7 @@ def command_line():
             print('Column 2: Cases')
 
         if(parsed_input[0] == 'plot_cases'):
-            plot_graph(parsed_data[0], parsed_data[2], 'b', "Days", "Cases")
+            plot_graph(parsed_data[0], parsed_data[2], 'b', "Days", "Cases", "Cases as of: " + parsed_data[0][len(parsed_data[0])-1])
             continue
 
         if(parsed_input[0] == 'plot_cases_log'):
