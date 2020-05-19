@@ -13,6 +13,22 @@ import numpy as np
 from datetime import date
 import csv
 
+'''
+Structure of parsed_data list after computation
+index   contents
+0	    Dates
+1	    Cases
+2	    Deaths
+3	    Tests
+4   	Days
+5   	New Cases
+6	    % Cases
+7   	New Deaths
+8	    % Deaths
+9	    New Tests
+10	    % Tests
+
+'''
 
 def command_line():
     os.system("mode con cols=150")
@@ -88,15 +104,6 @@ def command_line():
             print_data(header_fields, parsed_data)
             continue
 
-        if(parsed_input[0] == 'show_all'):
-            if(len(parsed_input) != 3):
-                print("Usage: show_all [next_days] [avg_previous_days]")
-                continue
-            else:
-                print_data(parsed_data[0], parsed_data[1], parsed_data[2], parsed_data[3])
-                projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data[2], parsed_data[3])
-                continue
-
         if(parsed_input[0] == 'diff'):
             if(len(parsed_input) != 3):
                 print("usage: diff [from_day] [to_day]")
@@ -104,8 +111,8 @@ def command_line():
             elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
                 print("Days must be integers. Ranging 0 -", parsed_data[0][len(parsed_data[0]) - 1])
                 continue
-            elif(int(parsed_input[1]) > parsed_data[0][len(parsed_data[0]) - 1] or \
-                 int(parsed_input[2]) > parsed_data[0][len(parsed_data[0]) - 1]):
+            elif(int(parsed_input[1]) > parsed_data[4][len(parsed_data[0]) - 1] or \
+                 int(parsed_input[2]) > parsed_data[4][len(parsed_data[0]) - 1]):
                 print("Range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
                 continue
             elif(int(parsed_input[1]) > int(parsed_input[2])):
@@ -119,8 +126,11 @@ def command_line():
             if(len(parsed_input) != 3):
                 print("Usage: projection [next_days] [avg_previous_days]")
                 continue
+            elif(not parsed_input[1].isdigit() or not parsed_input[2]):
+                print("[next_days] and [avg_previous_days] values must be integers.")
+                continue
             else:
-                projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data[2], parsed_data[3])
+                projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data[1], parsed_data[6])
                 continue
 
         if(parsed_input[0] == 'csv_format'):
@@ -138,7 +148,7 @@ def command_line():
 
         if(parsed_input[0] == 'plot_growth'):
             if(len(parsed_input) == 1):
-                plot_graph(parsed_data[0], parsed_data[3], 'k', "Days", "Growth Ratio (%)")  
+                plot_graph(parsed_data[1], parsed_data[5], 'k', "Days", "Growth Ratio (%)", "Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
                 continue
             elif(len(parsed_input) != 3):
                 print(len(parsed_input))
@@ -148,15 +158,15 @@ def command_line():
             elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
                 print("Days must be integers. Ranging 0 -", parsed_data[0][len(parsed_data[0]) - 1])
                 continue
-            elif(int(parsed_input[2]) > parsed_data[0][len(parsed_data[0]) - 1]):
+            elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
                 print("range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
                 continue
             elif(int(parsed_input[1]) > int(parsed_input[2])):
                 print("Range of days is invalid, starting day must be less than ending day")
                 continue
             else:
-                plot_graph(parsed_data[0][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                    parsed_data[3][int(parsed_input[1]):int(parsed_input[2]) + 1], 'k', "Days", "Growth Ratio (%)")  
+                plot_graph(parsed_data[1][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[5][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'k', "Days", "Growth Ratio (%)", "Growth Ratio (%) from day " + parsed_input[1] + " from " + parsed_input[2])  
                 continue
         print('Invalid input. For instructions  type "help".')
         

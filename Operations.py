@@ -8,6 +8,7 @@ def calc_growth_factor(data1, data2):
         return data1 / data2
 
 def compute_data(parsed_data):
+    days = np.array([])
     new_cases = np.array([])
     cases_growth_factor = np.array([])
     new_deaths = np.array([])
@@ -22,6 +23,7 @@ def compute_data(parsed_data):
             deaths_growth_factor = np.append(deaths_growth_factor, 0)
             new_tests = np.append(new_tests, parsed_data[3][i] - 0)
             tests_growth_factor = np.append(tests_growth_factor, 0)
+            days = np.append(days, i)
             continue
         new_cases = np.append(new_cases, parsed_data[1][i] - parsed_data[1][i-1])
         cases_growth_factor = np.append(cases_growth_factor, calc_growth_factor(parsed_data[1][i], parsed_data[1][i-1]))
@@ -29,6 +31,8 @@ def compute_data(parsed_data):
         deaths_growth_factor = np.append(deaths_growth_factor, calc_growth_factor(parsed_data[2][i], parsed_data[2][i-1]))
         new_tests = np.append(new_tests, parsed_data[3][i] - parsed_data[3][i-1])
         tests_growth_factor = np.append(tests_growth_factor, calc_growth_factor(parsed_data[3][i], parsed_data[3][i-1]))
+        days = np.append(days, i)
+    parsed_data.append(days)
     parsed_data.append(new_cases)
     parsed_data.append(cases_growth_factor)
     parsed_data.append(new_deaths)
@@ -51,9 +55,11 @@ def logistic_fn(population):
     return (days, logistic)
 
 def difference(parsed_data, day1, day2):
-    print("\u0394Days:\t\t", parsed_data[0][day2] - parsed_data[0][day1])
-    print("\u0394Cases:\t\t", parsed_data[2][day2] - parsed_data[2][day1])
-    print("\u0394Growth Ratio:\t", parsed_data[3][day2] - parsed_data[3][day1])
+    print("Data difference between:", parsed_data[0][day1], 'and', parsed_data[0][day2])
+    print("\u0394Days:\t", parsed_data[4][day2] - parsed_data[4][day1])
+    print("\u0394Cases:\t", parsed_data[1][day2] - parsed_data[1][day1])
+    print("\u0394Deaths: ", parsed_data[2][day2] - parsed_data[2][day1])
+    print("\u0394Tests:\t", parsed_data[3][day2] - parsed_data[3][day1])
 
 def projection(next_days, days_passed, cases, growth_factor):
     total_cases = cases[len(cases)-1]
