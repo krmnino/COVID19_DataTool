@@ -61,22 +61,27 @@ def difference(parsed_data, day1, day2):
     print("\u0394Deaths: ", parsed_data[2][day2] - parsed_data[2][day1])
     print("\u0394Tests:\t", parsed_data[3][day2] - parsed_data[3][day1])
 
-def projection(next_days, days_passed, cases, growth_factor):
-    total_cases = cases[len(cases)-1]
+def projection(next_days, days_passed, parsed_data):
+    total_cases = float(parsed_data[1][len(parsed_data[1])-1])
+    total_deaths = float(parsed_data[2][len(parsed_data[2])-1])
     counter = 0
-    index = len(growth_factor) - 1
-    counter = 0
-    avg_growth_factor = 0.0
+    avg_cases_gf = 0.0
+    avg_deaths_gf = 0.0
     while(counter < days_passed):
-        avg_growth_factor += growth_factor[index - counter]
+        avg_cases_gf += parsed_data[6][len(parsed_data[6]) - 1 - counter]
+        avg_deaths_gf += parsed_data[8][len(parsed_data[8]) - 1 - counter]
         counter += 1
-    avg_growth_factor /= days_passed
-    print('Avg Growth Factor (past', days_passed ,'days):', avg_growth_factor)
+    avg_cases_gf /= days_passed
+    avg_deaths_gf /= days_passed
+    print('Avg Cases Growth Factor (past', days_passed ,'days):', round(avg_cases_gf, 5))
+    print('Avg Deaths Growth Factor (past', days_passed ,'days):', round(avg_deaths_gf, 5))
     counter = 0
     while(counter < next_days):
-        total_cases = total_cases * avg_growth_factor
+        total_cases = total_cases * avg_cases_gf
+        total_deaths = total_deaths * avg_deaths_gf
         counter += 1
-    print("Prediction # of cases in the next", next_days, "days:", total_cases)
+    print("Prediction # of cases in the next", next_days, "days:", round(total_cases))
+    print("Prediction # of deaths in the next", next_days, "days:", round(total_deaths))
 
 def plot_graph(x, y, color, x_label, y_label, chart_title):
     plt.plot(x, y, 'ko', x, y, color)
@@ -107,8 +112,9 @@ def print_data(header, data):
     print('%13s'%(header[8]), end = '')
     print('%13s'%(header[9]), end = '')
     print('%13s'%(header[10]))
-    data[5] = np.round(data[5], decimals = 5)
-    data[7] = np.round(data[7], decimals = 5)
-    data[9] = np.round(data[9], decimals = 5)
+    #data[5] = np.round(data[5], decimals = 5)
+    #data[7] = np.round(data[7], decimals = 5)
+    #data[9] = np.round(data[9], decimals = 5)
     for i in range(len(data[0])):
-        print(data[0][i], f'{i:8} {data[1][i]:12} {data[4][i]:12} {data[5][i]:12} {data[2][i]:12} {data[6][i]:12} {data[7][i]:12} {data[3][i]:12} {data[8][i]:12} {data[3][i]:12}')
+        print('%10s'%(data[0][i]), '%8s'%(i),'%12s'%(data[1][i]), '%12s'%(data[4][i]))
+        #print(f'{i:8} {data[1][i]:12} {data[4][i]:12} {data[5][i]:12} {data[2][i]:12} {data[6][i]:12} {data[7][i]:12} {data[3][i]:12} {data[8][i]:12} {data[3][i]:12}')

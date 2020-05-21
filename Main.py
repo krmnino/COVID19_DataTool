@@ -130,7 +130,7 @@ def command_line():
                 print("[next_days] and [avg_previous_days] values must be integers.")
                 continue
             else:
-                projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data[1], parsed_data[6])
+                projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data)
                 continue
 
         if(parsed_input[0] == 'csv_format'):
@@ -171,6 +171,5 @@ def command_line():
         print('Invalid input. For instructions  type "help".')
         
 #################################################################################################################################
-
 
 command_line()

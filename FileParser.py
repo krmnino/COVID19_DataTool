@@ -5,7 +5,6 @@ def parse_file(input_data):
     cases = np.array([])
     deaths = np.array([])
     tests = np.array([])
-    day_counter = 0
     for i, line in enumerate(input_data):
         if(i == 0):
             continue
