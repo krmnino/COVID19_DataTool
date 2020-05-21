@@ -91,9 +91,10 @@ def plot_graph(x, y, color, x_label, y_label, chart_title):
     plt.grid()
     plt.show()
 
-def plot_graph_log(x, y, color, x_label, y_label):
+def plot_graph_log(x, y, color, x_label, y_label, chart_title):
     plt.plot(x, y, 'ko', x, y, color)
     plt.yscale('log')
+    plt.title(chart_title)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.grid()

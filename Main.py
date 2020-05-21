@@ -27,7 +27,6 @@ index   contents
 8	    % Deaths
 9	    New Tests
 10	    % Tests
-
 '''
 
 def command_line():
@@ -35,7 +34,8 @@ def command_line():
     np.set_printoptions(suppress=True)
     header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Tests', 'New Tests', '%\u0394 Tests']
     parsed_data = 0
-    instructions = ['load', 'show', 'show_all', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_growth', 'clear', 'exit', 'help', 'csv_format']
+    instructions = ['load', 'show', 'show_all', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log',
+                   'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf', 'export_csv', 'clear', 'exit', 'help']
     file_name = ''
     while(True):
         input_cmd = input('>> ')
@@ -48,29 +48,38 @@ def command_line():
             continue
 
         if(parsed_input[0] == 'exit'):
-            print('Exiting...')
-            break
+            if(len(parsed_input) != 1):
+                print('Usage: exit')
+                continue
+            else:
+                print('Exiting...')
+                break
 
         if(parsed_input[0] == 'help'):
-            print('usage manual:')
-            print('load [FILE]                                      Load data set in memory')
-            print('show                                             Displays loaded data set')
-            print('show_all [next_days] [avg_previous_days]         Displays loaded data set and projection')
-            print('delete                                           Erase data set loaded in memory')
-            print('diff                                             Shows difference of values between 2 days')
-            print('projection [next_days] [avg_previous_days]       Show projection for the next x days using avg growth factor from y previous days')
-            print('plot_cases                                       Display cases graph')
-            print('plot_cases_log                                   Display cases in a logarithmic graph')
-            print('plot_growth                                      Display growth rate graph')
-            print('plot_growth [from_day][to_day]                   Display growth rate graph from a range of days')
-            print('clear                                            Clears the console')
-            print('csv_format                                       Display .csv file format per columns')
-            print('help                                             Display program manual')
-            print('exit                                             Exit the program')
+            if(len(parsed_input) != 1):
+                print('Usage: help')
+            else:
+                print('usage manual:')
+                print('load [FILE]                                      Load data set in memory')
+                print('show                                             Displays loaded data set')
+                print('show_all [next_days] [avg_previous_days]         Displays loaded data set and projection')
+                print('delete                                           Erase data set loaded in memory')
+                print('diff                                             Shows difference of values between 2 days')
+                print('projection [next_days] [avg_previous_days]       Show projection for the next x days using avg growth factor from y previous days')
+                print('plot_cases                                       Display cases graph')
+                print('plot_cases_log                                   Display cases in a logarithmic graph')
+                print('plot_growth                                      Display growth rate graph')
+                print('plot_growth [from_day][to_day]                   Display growth rate graph from a range of days')
+                print('clear                                            Clears the console')
+                print('csv_format                                       Display .csv file format per columns')
+                print('help                                             Display program manual')
+                print('exit                                             Exit the program')
             continue
 
-        if(parsed_input[0] == "clear"):
-            if(platform.system() == "Windows"):
+        if(parsed_input[0] == 'clear'):
+            if(len(parsed_input) != 1):
+                print('Usage: clear')
+            elif(platform.system() == "Windows"):
                 os.system("cls")
             elif(platform.system() == "Linux"):
                 os.system("clear")
@@ -156,31 +165,67 @@ def command_line():
             if(len(parsed_input) != 1):
                 print("Usage: plot_cases_log")
             else:
-                plot_graph_log(parsed_data[0], parsed_data[2], 'b', "Days", "Cases")
+                plot_graph_log(parsed_data[4], parsed_data[1], 'b', "Days", "Cases", file_name + ": Cases as of " + parsed_data[0][len(parsed_data[0])-1])
             continue
 
-        if(parsed_input[0] == 'plot_growth'):
-            if(len(parsed_input) == 1):
-                plot_graph(parsed_data[1], parsed_data[5], 'k', "Days", "Growth Ratio (%)", "Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
-                continue
-            elif(len(parsed_input) != 3):
-                print(len(parsed_input))
-                print("Usage: plot_growth")
-                print("       plot_growth [from day] [to_day]")
-                continue
+        if(parsed_input[0] == 'plot_cases_gf'):
+            if(len(parsed_input) != 3 and len(parsed_input) != 1):
+                print("Usage: plot_cases_gf")
+                print("       plot_cases_gf [from day] [to_day]")
+            elif(len(parsed_input) == 1):
+                plot_graph(parsed_data[4], parsed_data[6], 'b', "Days", "Cases Growth Ratio (%)", file_name + ": Cases Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
             elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
                 print("Days must be integers. Ranging 0 -", parsed_data[0][len(parsed_data[0]) - 1])
-                continue
             elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
                 print("range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
-                continue
             elif(int(parsed_input[1]) > int(parsed_input[2])):
                 print("Range of days is invalid, starting day must be less than ending day")
-                continue
             else:
-                plot_graph(parsed_data[1][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[5][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'k', "Days", "Growth Ratio (%)", "Growth Ratio (%) from day " + parsed_input[1] + " from " + parsed_input[2])  
-                continue
+                plot_graph(parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'b', "Days", "Cases Growth Ratio (%)", file_name + ":Cases Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+            continue
+
+        if(parsed_input[0] == 'plot_deaths'):
+            if(len(parsed_input) != 3 and len(parsed_input) != 1):
+                print("Usage: plot_deaths")
+                print("       plot_deaths [from day] [to_day]")
+            elif(len(parsed_input) == 1):
+                plot_graph(parsed_data[4], parsed_data[2], 'r', "Days", "Deaths", file_name + ": Deaths as of " + parsed_data[0][len(parsed_data[0])-1])  
+            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
+                print("Days must be integers. Ranging 0 -", parsed_data[0][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
+                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[1]) > int(parsed_input[2])):
+                print("Range of days is invalid, starting day must be less than ending day")
+            else:
+                plot_graph(parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[2][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'r', "Days", "Deaths", file_name + ":Deaths from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+            continue
+
+        if(parsed_input[0] == 'plot_deaths_log'):
+            if(len(parsed_input) != 1):
+                print("Usage: plot_deaths_log")
+            else:
+                plot_graph_log(parsed_data[4], parsed_data[2], 'r', "Days", "Deaths", file_name + ": Deaths as of " + parsed_data[0][len(parsed_data[0])-1])
+            continue
+
+        if(parsed_input[0] == 'plot_deaths_gf'):
+            if(len(parsed_input) != 3 and len(parsed_input) != 1):
+                print("Usage: plot_deaths_gf")
+                print("       plot_deaths_gf [from day] [to_day]")
+            elif(len(parsed_input) == 1):
+                plot_graph(parsed_data[4], parsed_data[8], 'r', "Days", "Deaths Growth Ratio (%)", file_name + ": Deaths Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
+            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
+                print("Days must be integers. Ranging 0 -", parsed_data[0][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
+                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[1]) > int(parsed_input[2])):
+                print("Range of days is invalid, starting day must be less than ending day")
+            else:
+                plot_graph(parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[8][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'r', "Days", "Deaths Growth Ratio (%)", file_name + ":Deaths Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+            continue
+
         print('Invalid input. For instructions  type "help".')
         
 #################################################################################################################################
