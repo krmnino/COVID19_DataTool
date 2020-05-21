@@ -112,9 +112,8 @@ def print_data(header, data):
     print('%13s'%(header[8]), end = '')
     print('%13s'%(header[9]), end = '')
     print('%13s'%(header[10]))
-    #data[5] = np.round(data[5], decimals = 5)
-    #data[7] = np.round(data[7], decimals = 5)
-    #data[9] = np.round(data[9], decimals = 5)
     for i in range(len(data[0])):
-        print('%10s'%(data[0][i]), '%8s'%(i),'%12s'%(data[1][i]), '%12s'%(data[4][i]))
-        #print(f'{i:8} {data[1][i]:12} {data[4][i]:12} {data[5][i]:12} {data[2][i]:12} {data[6][i]:12} {data[7][i]:12} {data[3][i]:12} {data[8][i]:12} {data[3][i]:12}')
+        print('%10s'%(data[0][i]), '%8s'%(data[4][i]), \
+            '%12s'%(data[1][i]), '%12s'%(data[5][i]), '%12s'%(round(data[6][i], 5)), \
+            '%12s'%(data[2][i]), '%12s'%(data[7][i]) , '%12s'%(round(data[2][i], 5)), \
+            '%12s'%(data[3][i]), '%12s'%(data[9][i]) , '%12s'%(round(data[10][i], 5)))
