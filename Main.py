@@ -5,6 +5,7 @@ from Operations import plot_graph
 from Operations import projection
 from Operations import compute_data
 from Operations import plot_graph_log
+from FetchData import fetch_data
 
 import os
 import platform
@@ -271,4 +272,5 @@ def command_line():
         
 #################################################################################################################################
 
-command_line()
+#command_line()
+fetch_data()
