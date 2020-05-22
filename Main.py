@@ -5,6 +5,7 @@ from Operations import plot_graph
 from Operations import projection
 from Operations import compute_data
 from Operations import plot_graph_log
+from Operations import plot_graph_all
 from FetchData import fetch_data
 
 import os
@@ -36,7 +37,7 @@ def command_line():
     header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Tests', 'New Tests', '%\u0394 Tests']
     parsed_data = 0
     instructions = ['load', 'show', 'show_all', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log',
-                   'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf', 'export_csv', 'clear', 'exit', 'help']
+                   'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf', 'plot_all', 'export_csv', 'clear', 'exit', 'help']
     file_name = ''
     while(True):
         input_cmd = input('>> ')
@@ -268,9 +269,28 @@ def command_line():
                    'g', "Days", "Tests Growth Ratio (%)", file_name + ":Tests Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
+        if(parsed_input[0] == 'plot_all'):
+            if(len(parsed_input) != 3 and len(parsed_input) != 1):
+                print("Usage: plot_all")
+                print("       plot_all [from day] [to_day]")
+            elif(len(parsed_input) == 1):
+                plot_graph_all(parsed_data, file_name + ": Cases, Deaths, and Tests as of " + parsed_data[0][len(parsed_data[0])-1], 0, len(parsed_data[0])-1)  
+            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
+                print("Days must be integers. Ranging 0 -", parsed_data[0][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
+                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[0][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[1]) > int(parsed_input[2])):
+                print("Range of days is invalid, starting day must be less than ending day")
+            else:
+                plot_graph_all(parsed_data, file_name + ": Cases, Deaths, and Tests from " + parsed_data[0][int(parsed_input[1])] + " to " \
+                    + parsed_data[0][int(parsed_input[2])], int(parsed_input[1]), int(parsed_input[2]))  
+            continue
+
+
         print('Invalid input. For instructions  type "help".')
         
 #################################################################################################################################
 
-#command_line()
-fetch_data()
+command_line()
+#fetch_data()
+
