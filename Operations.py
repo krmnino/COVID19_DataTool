@@ -100,6 +100,14 @@ def plot_graph_log(x, y, color, x_label, y_label, chart_title):
     plt.grid()
     plt.show()
 
+def plot_graph_all(parsed_data):
+    plt.plot(parsed_data[4], parsed_data[1], 'ko', x, y, color)
+    plt.title(chart_title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.grid()
+    plt.show()
+
 def print_data(header, data):
     np.set_printoptions(precision=3)
     print('%10s'%(header[0]), end = '')
