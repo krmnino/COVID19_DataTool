@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from datetime import date
 
 def calc_growth_factor(data1, data2):
     if(data2 == 0):
@@ -131,3 +132,12 @@ def print_data(header, data):
             '%12s'%(data[1][i]), '%12s'%(data[5][i]), '%12s'%(round(data[6][i], 5)), \
             '%12s'%(data[2][i]), '%12s'%(data[7][i]) , '%12s'%(round(data[2][i], 5)), \
             '%12s'%(data[3][i]), '%12s'%(data[9][i]) , '%12s'%(round(data[10][i], 5)))
+
+def list_to_csv(parsed_data):
+    file_name = 'out_data_' + date.today().strftime('%Y-%m-%d') + '.csv'
+    out_file = open('export/' + file_name, 'w')
+    out_file.write('Date,Day,Cases,NewCases,D%Cases,Deaths,NewDeaths,D%Deaths,Tests,NewTests,D%Tests\n')
+    for i in range(0, len(parsed_data[0])-1):
+        line = str(parsed_data[0][i]) + "," + str(parsed_data[1][i]) + "," + str(parsed_data[2][i]) + "," + str(parsed_data[3][i]) + "\n"
+        out_file.write(line)
+    out_file.close()

@@ -4,6 +4,7 @@ from Operations import print_data
 from Operations import plot_graph
 from Operations import projection
 from Operations import compute_data
+from Operations import list_to_csv
 from Operations import plot_graph_log
 from Operations import plot_graph_all
 from FetchData import fetch_data
@@ -141,10 +142,8 @@ def command_line():
                 projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data)
             continue
 
-        if(parsed_input[0] == 'csv_format'):
-            print('Column 1: Date')
-            print('Column 2: Cases')
-            print('Column 2: Cases')
+        if(parsed_input[0] == 'export_csv'):
+            list_to_csv(parsed_data)
 
         if(parsed_input[0] == 'plot_cases'):
             if(len(parsed_input) != 3 and len(parsed_input) != 1):
