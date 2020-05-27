@@ -8,6 +8,7 @@ from Operations import list_to_csv
 from Operations import plot_graph_log
 from Operations import plot_graph_all
 from FetchData import fetch_data
+from DataPoint import DataPoint
 
 import os
 import platform
@@ -33,7 +34,8 @@ index   contents
 '''
 
 def command_line():
-    os.system("mode con cols=150")
+    country_files = {'peru_data.csv':'PER', 'usa_data.csv':'USA'}
+    os.system('mode con cols=150')
     np.set_printoptions(suppress=True)
     header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Tests', 'New Tests', '%\u0394 Tests']
     parsed_data = 0
@@ -290,6 +292,10 @@ def command_line():
         
 #################################################################################################################################
 
-command_line()
+#command_line()
 #fetch_data()
 
+obj1 = DataPoint('PER', '2020-5-10', 12345, 5432, 12345678)
+obj2 = DataPoint('PER', '2020-5-11', 12398, 5498, 12345612)
+
+obj1.show_comparison(obj2)
