@@ -8,7 +8,7 @@ from Operations import list_to_csv
 from Operations import plot_graph_log
 from Operations import plot_graph_all
 from FetchData import fetch_data
-from DataPoint import DataPoint
+from FetchData import diff_raw_country_data
 
 import os
 import platform
@@ -34,13 +34,14 @@ index   contents
 '''
 
 def command_line():
-    country_files = {'peru_data.csv':'PER', 'usa_data.csv':'USA'}
     os.system('mode con cols=150')
     np.set_printoptions(suppress=True)
+    iso_code_countries = {'USA':'USA_data.csv', 'PER':'PER_data.csv'}
     header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Tests', 'New Tests', '%\u0394 Tests']
-    parsed_data = 0
     instructions = ['load', 'show', 'show_all', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log',
                    'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf', 'plot_all', 'export_csv', 'clear', 'exit', 'help']
+    new_data = []
+    parsed_data = 0
     file_name = ''
     while(True):
         input_cmd = input('>> ')
@@ -100,7 +101,7 @@ def command_line():
                     print(parsed_input[1], "is not accesible")
                     continue
                 file_name = str(parsed_input[1])
-                input_data = open(str(parsed_input[1]))
+                input_data = open('data/' + str(parsed_input[1]))
                 parsed_data = parse_file(input_data)
                 input_data.close()
                 if(parsed_data != 0):
@@ -295,7 +296,4 @@ def command_line():
 #command_line()
 #fetch_data()
 
-obj1 = DataPoint('PER', '2020-5-10', 12345, 5432, 12345678)
-obj2 = DataPoint('PER', '2020-5-11', 12398, 5498, 12345612)
-
-obj1.show_comparison(obj2)
+diff_raw_country_data('USA_data.csv')

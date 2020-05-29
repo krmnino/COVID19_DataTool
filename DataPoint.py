@@ -12,6 +12,9 @@ class DataPoint:
         self.deaths = deaths_
         self.tests = tests_
     
+    def get_data(self):
+        return [self.iso_code, self.date, self.cases, self.deaths, self.tests]
+
     def show(self):
         print("ISO:", self.iso_code)
         print("Date:", self.date)

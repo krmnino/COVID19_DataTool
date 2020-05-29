@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import date
+from math import e
 
 def calc_growth_factor(data1, data2):
     if(data2 == 0):
