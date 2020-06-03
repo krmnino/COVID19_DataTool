@@ -16,16 +16,12 @@ class DataPoint:
         return [self.iso_code, self.date, self.cases, self.deaths, self.tests]
 
     def show(self):
-        print("ISO:", self.iso_code)
-        print("Date:", self.date)
-        print("Cases:", self.cases)
-        print("Deaths:", self.deaths)
-        print("Tests:", self.tests)
+        #print('%12s'%(str(self.iso_code)), '%12s'%(str(self.date)), '%12s'%(str(self.cases), '%12s'%(str(self.deaths), '%12s'%(str(self.tests)))))
+        print('%12s'%(str(self.iso_code)), end = '')
+        print('%15s'%(str(self.date)), end = '')
+        print('%12s'%(str(self.cases)), end = '')
+        print('%12s'%(str(self.deaths)), end = '')
+        print('%12s'%(str(self.tests)))
 
-    def show_comparison(self, dp):
-        print('%12s'%('FIELDS'), '|', '%12s'%(self.date), '|' ,'%12s'%(dp.date))
-        print('-------------+--------------+-------------')
-        print('%12s'%('ISO'), '|', '%12s'%(self.iso_code), '|' ,'%12s'%(dp.iso_code))
-        print('%12s'%('Cases'), '|', '%12s'%(self.cases), '|' ,'%12s'%(dp.cases))
-        print('%12s'%('Deaths'), '|', '%12s'%(self.deaths), '|' ,'%12s'%(dp.deaths))
-        print('%12s'%('Tests'), '|', '%12s'%(self.tests), '|' ,'%12s'%(dp.tests))
+
+

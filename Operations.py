@@ -134,6 +134,12 @@ def print_data(header, data):
             '%12s'%(data[2][i]), '%12s'%(data[7][i]) , '%12s'%(round(data[2][i], 5)), \
             '%12s'%(data[3][i]), '%12s'%(data[9][i]) , '%12s'%(round(data[10][i], 5)))
 
+def print_new_data(new_data):
+    print('INDEX', '%11s'%('ISO_CODE'), '%11s'%('DATE'), '%11s'%('CASES'), '%11s'%('DEATHS'), '%11s'%('TESTS'))
+    for i, entry in enumerate(new_data):
+        print('%5s'%(str(i)), end = '')
+        entry.show()
+
 def list_to_csv(parsed_data):
     file_name = 'out_data_' + date.today().strftime('%Y-%m-%d') + '.csv'
     out_file = open('export/' + file_name, 'w')

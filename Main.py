@@ -7,6 +7,7 @@ from Operations import compute_data
 from Operations import list_to_csv
 from Operations import plot_graph_log
 from Operations import plot_graph_all
+from Operations import print_new_data
 from FetchData import fetch_data
 from FetchData import diff_raw_country_data
 
@@ -39,7 +40,7 @@ def command_line():
     iso_code_countries = {'USA':'USA_data.csv', 'PER':'PER_data.csv'}
     header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Tests', 'New Tests', '%\u0394 Tests']
     instructions = ['load', 'show', 'show_all', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log',
-                   'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf', 'plot_all', 'export_csv', 'clear', 'exit', 'help']
+                   'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf', 'plot_all', 'update', 'fetch', 'export_csv', 'clear', 'exit', 'help']
     new_data = []
     parsed_data = 0
     file_name = ''
@@ -114,6 +115,21 @@ def command_line():
             file_name = ''
             continue
 
+        if(parsed_input[0] == 'fetch'):
+            fetch_data()
+            print('Raw data was updated.')
+            continue
+
+        if(parsed_input[0] == 'update'):
+            if(len(parsed_input) != 2):
+                print('Usage: update [ISO_CODE]')
+            elif(not parsed_input[1] in iso_code_countries):
+                print('Invalid country ISO code')
+            else:
+                new_data = diff_raw_country_data(iso_code_countries[parsed_input[1]])
+                print_new_data(new_data)
+            continue
+
         if(parsed_data == 0):
             print('Data has not been loaded into memory')
             continue
@@ -121,6 +137,11 @@ def command_line():
         if(parsed_input[0] == 'show'):
             print_data(header_fields, parsed_data)
             continue
+
+        if(parsed_input[0] == 'export_csv'):
+            list_to_csv(parsed_data)
+            continue
+
 
         if(parsed_input[0] == 'diff'):
             if(len(parsed_input) != 3):
@@ -144,9 +165,6 @@ def command_line():
             else:
                 projection(int(parsed_input[1]), int(parsed_input[2]), parsed_data)
             continue
-
-        if(parsed_input[0] == 'export_csv'):
-            list_to_csv(parsed_data)
 
         if(parsed_input[0] == 'plot_cases'):
             if(len(parsed_input) != 3 and len(parsed_input) != 1):
@@ -293,7 +311,7 @@ def command_line():
         
 #################################################################################################################################
 
-#command_line()
+command_line()
 #fetch_data()
 
-diff_raw_country_data('USA_data.csv')
+#diff_raw_country_data('USA_data.csv')
