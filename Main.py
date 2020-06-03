@@ -127,7 +127,11 @@ def command_line():
                 print('Invalid country ISO code')
             else:
                 new_data = diff_raw_country_data(iso_code_countries[parsed_input[1]])
-                print_new_data(new_data)
+                if(len(new_data) == 0):
+                    print(iso_code_countries[parsed_input[1], 'is up to date.'])
+                    continue
+                else:
+                    print_new_data(new_data)
             continue
 
         if(parsed_data == 0):
@@ -141,7 +145,6 @@ def command_line():
         if(parsed_input[0] == 'export_csv'):
             list_to_csv(parsed_data)
             continue
-
 
         if(parsed_input[0] == 'diff'):
             if(len(parsed_input) != 3):
