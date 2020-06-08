@@ -33,9 +33,9 @@ def diff_raw_country_data(file_name):
             if(i == 0):
                 continue
             parsed_line = line.split(',')
-            if(file_name[:file_name.find('_')] == parsed_line[0] and time.strptime(last_date, '%Y-%m-%d') < time.strptime(parsed_line[2], '%Y-%m-%d')):
-                if(parsed_line[11][:parsed_line[11].find('.')] == ''):
-                    new_data.append(DataPoint(parsed_line[0], parsed_line[2], int(parsed_line[3]), int(parsed_line[5]), 0))
+            if(file_name[:file_name.find('_')] == parsed_line[0] and time.strptime(last_date, '%Y-%m-%d') < time.strptime(parsed_line[3], '%Y-%m-%d')):
+                if(parsed_line[12][:parsed_line[12].find('.')] == ''):
+                    new_data.append(DataPoint(parsed_line[0], parsed_line[3], int(parsed_line[4]), int(parsed_line[5]), 0))
                 else:
-                    new_data.append(DataPoint(parsed_line[0], parsed_line[2], int(parsed_line[3]), int(parsed_line[5]), int(parsed_line[11][:parsed_line[11].find('.')])))
+                    new_data.append(DataPoint(parsed_line[0], parsed_line[3], int(parsed_line[4]), int(parsed_line[5]), int(parsed_line[12][:parsed_line[12].find('.')])))
         return new_data

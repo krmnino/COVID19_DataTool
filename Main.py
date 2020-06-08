@@ -128,10 +128,18 @@ def command_line():
             else:
                 new_data = diff_raw_country_data(iso_code_countries[parsed_input[1]])
                 if(len(new_data) == 0):
-                    print(iso_code_countries[parsed_input[1], 'is up to date.'])
-                    continue
+                    print(iso_code_countries[parsed_input[1]], 'is up to date.')
                 else:
                     print_new_data(new_data)
+                    save_new = input('Save new data? (Y/N): ')
+                    if(save_new == 'Y' or save_new == 'y'):
+                        #TODO
+                        print('Updated data in', iso_code_countries[parsed_input[1]] + '_data.csv')
+                    elif(save_new == 'N' or save_new == 'n'):
+                        new_data = []
+                        print('Data discarted')
+                    else:
+                        print('Invalid input.')
             continue
 
         if(parsed_data == 0):
