@@ -131,15 +131,15 @@ def command_line():
                     print(iso_code_countries[parsed_input[1]], 'is up to date.')
                 else:
                     print_new_data(new_data)
-                    save_new = input('Save new data? (Y/N): ')
-                    if(save_new == 'Y' or save_new == 'y'):
+                    save_new = input('Save new data up to what index? (Type integer or N/n to abort): ')
+                    if(save_new.isdigit() and int(save_new) >= 0  and int(save_new) < len(new_data)):
                         #TODO
                         print('Updated data in', iso_code_countries[parsed_input[1]] + '_data.csv')
                     elif(save_new == 'N' or save_new == 'n'):
                         new_data = []
                         print('Data discarted')
                     else:
-                        print('Invalid input.')
+                        print('Invalid input. Make sure the input is an integer between 0 and', len(new_data) - 1)
             continue
 
         if(parsed_data == 0):
