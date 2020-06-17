@@ -10,6 +10,8 @@ from Operations import plot_graph_all
 from Operations import print_new_data
 from FetchUSAData import fetch_data_usa
 from FetchUSAData import diff_raw_USA_data
+from FetchUSAData import fetch_data_peru
+from FetchUSAData import diff_raw_PER_data
 
 import os
 import platform
@@ -122,7 +124,7 @@ def command_line():
                 print('Invalid country ISO code')
             else:
                 if(parsed_input[1] == 'PER'):
-                    print('TODO')
+                    fetch_data_peru()
                     print('PER raw data was updated.')
                 elif(parsed_input[1] == 'USA'):
                     fetch_data_usa()
@@ -138,7 +140,7 @@ def command_line():
                 if(parsed_input[1] == 'USA'):
                     new_data = diff_raw_USA_data()
                 elif(parsed_input[1] == 'PER'):
-                    print('TODO')
+                    new_data = diff_raw_PER_data()
                 if(len(new_data) == 0):
                     print(iso_code_countries[parsed_input[1]], 'is up to date.')
                 else:
@@ -335,6 +337,3 @@ def command_line():
 #################################################################################################################################
 
 command_line()
-#fetch_data()
-
-#diff_raw_country_data('USA_data.csv')
