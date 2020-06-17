@@ -8,8 +8,8 @@ from Operations import list_to_csv
 from Operations import plot_graph_log
 from Operations import plot_graph_all
 from Operations import print_new_data
-from FetchData import fetch_data
-from FetchData import diff_raw_country_data
+from FetchUSAData import fetch_data_usa
+from FetchUSAData import diff_raw_USA_data
 
 import os
 import platform
@@ -116,8 +116,17 @@ def command_line():
             continue
 
         if(parsed_input[0] == 'fetch'):
-            fetch_data()
-            print('Raw data was updated.')
+            if(len(parsed_input) != 2):
+                print('Usage: fetch [ISO_CODE]')
+            elif(not parsed_input[1] in iso_code_countries):
+                print('Invalid country ISO code')
+            else:
+                if(parsed_input[1] == 'PER'):
+                    print('TODO')
+                    print('PER raw data was updated.')
+                elif(parsed_input[1] == 'USA'):
+                    fetch_data_usa()
+                    print('USA raw data was updated.')
             continue
 
         if(parsed_input[0] == 'update'):
@@ -126,7 +135,10 @@ def command_line():
             elif(not parsed_input[1] in iso_code_countries):
                 print('Invalid country ISO code')
             else:
-                new_data = diff_raw_country_data(iso_code_countries[parsed_input[1]])
+                if(parsed_input[1] == 'USA'):
+                    new_data = diff_raw_USA_data()
+                elif(parsed_input[1] == 'PER'):
+                    print('TODO')
                 if(len(new_data) == 0):
                     print(iso_code_countries[parsed_input[1]], 'is up to date.')
                 else:

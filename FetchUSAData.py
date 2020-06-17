@@ -32,5 +32,14 @@ def diff_raw_USA_data():
         for i, line in enumerate(raw_data_file):
             if(i == 0):
                 continue
-            print(line.split(',')[0])
+            parsed_line = line.split(',')
+            curr_date = str(parsed_line[0][:4]) + '-' + str(parsed_line[0][4:6]) + '-' + str(parsed_line[0][6:])
+            print(date)
+            if(time.strptime(last_date, '%Y-%m-%d') < time.strptime(curr_date, '%Y-%m-%d')):
+                #Index  Data
+                #   0   Date
+                #   2   Cases
+                #   13   Deaths
+                #   17  Tests   
+                new_data.insert(0, DataPoint(curr_date, int(parsed_line[2]), int(parsed_line[13]), int(parsed_line[17])))
         return new_data
