@@ -8,10 +8,10 @@ from Operations import list_to_csv
 from Operations import plot_graph_log
 from Operations import plot_graph_all
 from Operations import print_new_data
-from FetchUSAData import fetch_data_usa
-from FetchUSAData import diff_raw_USA_data
-from FetchUSAData import fetch_data_peru
-from FetchUSAData import diff_raw_PER_data
+from USA_FetchData import fetch_data_usa
+from USA_FetchData import diff_raw_USA_data
+from USA_FetchData import fetch_data_peru
+from USA_FetchData import diff_raw_PER_data
 
 import os
 import platform
