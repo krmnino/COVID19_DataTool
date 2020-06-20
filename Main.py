@@ -10,8 +10,8 @@ from Operations import plot_graph_all
 from Operations import print_new_data
 from USA_FetchData import fetch_data_usa
 from USA_FetchData import diff_raw_USA_data
-from USA_FetchData import fetch_data_peru
-from USA_FetchData import diff_raw_PER_data
+from PER_FetchData import fetch_data_peru
+from PER_FetchData import diff_raw_PER_data
 
 import os
 import platform
@@ -99,12 +99,12 @@ def command_line():
                 print("Usage: load [FILE PATH]")
             else:
                 try:
-                    input_data = open(str(parsed_input[1]))
+                    open('data/' + iso_code_countries[str(parsed_input[1])])
                 except:
-                    print(parsed_input[1], "is not accesible")
+                    print(iso_code_countries[str(parsed_input[1])], "is not accesible")
                     continue
                 file_name = str(parsed_input[1])
-                input_data = open('data/' + str(parsed_input[1]))
+                input_data = open('data/' + iso_code_countries[str(parsed_input[1])])
                 parsed_data = parse_file(input_data)
                 input_data.close()
                 if(parsed_data != 0):
@@ -205,7 +205,7 @@ def command_line():
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
                 plot_graph(parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[1][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'b', "Days", "Cases", file_name + ":Cases from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+                   'b', "Days", "Cases", file_name + ": Cases from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
         if(parsed_input[0] == 'plot_cases_log'):
@@ -229,7 +229,7 @@ def command_line():
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
                 plot_graph(parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'b', "Days", "Cases Growth Ratio (%)", file_name + ":Cases Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+                   'b', "Days", "Cases Growth Ratio (%)", file_name + ": Cases Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
         if(parsed_input[0] == 'plot_deaths'):
@@ -246,7 +246,7 @@ def command_line():
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
                 plot_graph(parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[2][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'r', "Days", "Deaths", file_name + ":Deaths from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+                   'r', "Days", "Deaths", file_name + ": Deaths from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
         if(parsed_input[0] == 'plot_deaths_log'):
@@ -270,7 +270,7 @@ def command_line():
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
                 plot_graph(parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[8][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'r', "Days", "Deaths Growth Ratio (%)", file_name + ":Deaths Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+                   'r', "Days", "Deaths Growth Ratio (%)", file_name + ": Deaths Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
         if(parsed_input[0] == 'plot_tests'):
@@ -287,7 +287,7 @@ def command_line():
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
                 plot_graph(parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[3][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'g', "Days", "Tests", file_name + ":Tests from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+                   'g', "Days", "Tests", file_name + ": Tests from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
         if(parsed_input[0] == 'plot_tests_log'):
@@ -311,7 +311,7 @@ def command_line():
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
                 plot_graph(parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[10][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'g', "Days", "Tests Growth Ratio (%)", file_name + ":Tests Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+                   'g', "Days", "Tests Growth Ratio (%)", file_name + ": Tests Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
         if(parsed_input[0] == 'plot_all'):
