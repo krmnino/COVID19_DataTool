@@ -135,7 +135,7 @@ def print_data(header, data):
             '%12s'%(data[3][i]), '%12s'%(data[9][i]) , '%12s'%(round(data[10][i], 5)))
 
 def print_new_data(new_data):
-    print('INDEX', '%14s'%('DATE'), '%11s'%('CASES'), '%11s'%('DEATHS'), '%11s'%('TESTS'))
+    print('INDEX', '%14s'%('DATE'), '%11s'%('CASES'), '%11s'%('DEATHS'), '%11s'%('TESTS'), '%11s'%('RECOVERED'), '%11s'%('HOSPITAL'))
     for i, entry in enumerate(new_data):
         print('%5s'%(str(i)), end = '')
         entry.show()

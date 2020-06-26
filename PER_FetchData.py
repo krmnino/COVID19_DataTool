@@ -6,21 +6,25 @@ from DataPoint import DataPoint
 
 
 def fetch_data_peru():
-    src_url = ''
+    src_url = 'https://raw.githubusercontent.com/krmnino/Peru_COVID19_Stats/master/PER_data.csv'
     try:
         req_data = requests.get(src_url).text
     except:
         print('Could not rearch PER data source.')
-    req_data = requests.get(src_url).text
-    out = open('fetch/raw_PER.csv', 'w')
-    out.write(req_data)
-    out.close()
+        return
+    else:
+        req_data = requests.get(src_url).text
+        out = open('fetch/raw_PER.csv', 'w')
+        out.write(req_data)
+        out.close()
 
 def diff_raw_PER_data():
     try:
-        open('fetch/raw_PER.csv')
+        open('fetch/raw_PER.csv', 'r')
+        open('data/PER_data.csv')
     except:
-        print('Could not access USA raw data file.')
+        print('Could not access PER raw/parsed data file.')  
+        return      
     else:
         country_file = open('data/PER_data.csv')
         raw_data_file = open('fetch/raw_PER.csv', 'r')
@@ -32,10 +36,14 @@ def diff_raw_PER_data():
         for i, line in enumerate(raw_data_file):
             if(i == 0):
                 continue
-            parsed_line = line.split(',')
-            curr_date = str(parsed_line[0][:4]) + '-' + str(parsed_line[0][4:6]) + '-' + str(parsed_line[0][6:])
-            print(date)
-            if(time.strptime(last_date, '%Y-%m-%d') < time.strptime(curr_date, '%Y-%m-%d')):
-                #TODO: find data source....
-                break
+            parsed_line = line.split(',') 
+            if(time.strptime(last_date, '%Y-%m-%d') < time.strptime(str(parsed_line[0]), '%Y-%m-%d')):
+                #Index  Data
+                #   0   Date
+                #   1   Cases
+                #   2   Deaths
+                #   3   Tests   
+                #   4   Recovered
+                #   5   Hospitalized
+                new_data.append(DataPoint(parsed_line[0], int(parsed_line[1]), int(parsed_line[2]), int(parsed_line[3]), int(parsed_line[4]),int(parsed_line[5])))
         return new_data
