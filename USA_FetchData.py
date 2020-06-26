@@ -11,16 +11,20 @@ def fetch_data_usa():
         req_data = requests.get(src_url).text
     except:
         print('Could not rearch USA data source.')
-    req_data = requests.get(src_url).text
-    out = open('fetch/raw_USA.csv', 'w')
-    out.write(req_data)
-    out.close()
+        return
+    else:
+        req_data = requests.get(src_url).text
+        out = open('fetch/raw_USA.csv', 'w')
+        out.write(req_data)
+        out.close()
 
 def diff_raw_USA_data():
     try:
-        open('fetch/raw_USA.csv')
+        open('fetch/raw_USA.csv', 'r')
+        open('data/USA_data.csv')
     except:
-        print('Could not access USA raw data file.')
+        print('Could not access USA raw/parsed data file.')
+        return
     else:
         country_file = open('data/USA_data.csv')
         raw_data_file = open('fetch/raw_USA.csv', 'r')
@@ -34,12 +38,14 @@ def diff_raw_USA_data():
                 continue
             parsed_line = line.split(',')
             curr_date = str(parsed_line[0][:4]) + '-' + str(parsed_line[0][4:6]) + '-' + str(parsed_line[0][6:])
-            print(date)
             if(time.strptime(last_date, '%Y-%m-%d') < time.strptime(curr_date, '%Y-%m-%d')):
                 #Index  Data
                 #   0   Date
                 #   2   Cases
-                #   13   Deaths
-                #   17  Tests   
-                new_data.insert(0, DataPoint(curr_date, int(parsed_line[2]), int(parsed_line[13]), int(parsed_line[17])))
+                #   13  Deaths
+                #   17  Tests
+                #   11    Recovered
+                #   6   Hospitalized
+                new_data.insert(0, DataPoint(curr_date, int(parsed_line[2]), int(parsed_line[13]),
+                int(parsed_line[17]), int(parsed_line[11]), int(parsed_line[6])))
         return new_data
