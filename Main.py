@@ -8,6 +8,7 @@ from Operations import list_to_csv
 from Operations import plot_graph_log
 from Operations import plot_graph_all
 from Operations import print_new_data
+from Operations import update_country_data
 from USA_FetchData import fetch_data_usa
 from USA_FetchData import diff_raw_USA_data
 from PER_FetchData import fetch_data_peru
@@ -147,8 +148,8 @@ def command_line():
                     print_new_data(new_data)
                     save_new = input('Save new data up to what index? (Type integer or N/n to abort): ')
                     if(save_new.isdigit() and int(save_new) >= 0  and int(save_new) < len(new_data)):
-                        #TODO
-                        print('Updated data in', iso_code_countries[parsed_input[1]] + '_data.csv')
+                        if(update_country_data(iso_code_countries[parsed_input[1]], int(save_new), new_data) == True):
+                            print('Updated data in', iso_code_countries[parsed_input[1]])
                     elif(save_new == 'N' or save_new == 'n'):
                         new_data = []
                         print('Data discarted')

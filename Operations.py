@@ -148,3 +148,16 @@ def list_to_csv(parsed_data):
         line = str(parsed_data[0][i]) + "," + str(parsed_data[1][i]) + "," + str(parsed_data[2][i]) + "," + str(parsed_data[3][i]) + "\n"
         out_file.write(line)
     out_file.close()
+
+def update_country_data(file_name, max_index, new_data):
+    try:
+        open('data/' + file_name, 'a')
+    except:
+        print('Could not access', file_name)
+        return False
+    else:
+        with open('data/' + file_name, 'a') as file:
+            for i in range(0, max_index + 1):
+                file.writelines(new_data[i].to_csv())
+            return True
+        file.close()
