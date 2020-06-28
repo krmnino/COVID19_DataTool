@@ -42,6 +42,8 @@ index   contents
 14      % Hospitalized
 15	    New Tests
 16	    % Tests
+17      Mortality Rate
+18      Active Cases
 '''
 
 def command_line():
@@ -49,7 +51,7 @@ def command_line():
     np.set_printoptions(suppress=True)
     iso_code_countries = {'USA':'USA_data.csv', 'PER':'PER_data.csv'}
     header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Recov.', 'New Recov.', '%\u0394 Recov.',
-                    'Hospit.', 'New Hospit.', '%\u0394 Hospit.', 'Tests', 'New Tests', '%\u0394 Tests']
+                    'Hospit.', 'New Hospit.', '%\u0394 Hospit.', 'Tests', 'New Tests', '%\u0394 Tests', 'Mort. %', 'Active']
     instructions = ['load', 'show_diff', 'show_gf', 'show_cases', 'show_deaths', 'show_tests', 'show_recovered', 'show_hospitalized', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log',
                    'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf', 'plot_recovered', 'plot_recovered_log', 'plot_recovered_gf', 'plot_hospitalized',
                    'plot_hospitalized_log', 'plot_hospitalized_gf', 'plot_all', 'update', 'fetch', 'export_csv', 'clear', 'exit', 'help']
