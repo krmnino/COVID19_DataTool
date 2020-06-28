@@ -5,6 +5,8 @@ def parse_file(input_data):
     cases = np.array([])
     deaths = np.array([])
     tests = np.array([])
+    recovered = np.array([])
+    hospitalized = np.array([])
     for i, line in enumerate(input_data):
         if(i == 0):
             continue
@@ -15,6 +17,8 @@ def parse_file(input_data):
             int(parsed_line[1])
             int(parsed_line[2])
             int(parsed_line[3])
+            int(parsed_line[4])
+            int(parsed_line[5])
         except:
             print('Data contains invalid data. Cannot convert string to integer.')
             return 0
@@ -22,4 +26,6 @@ def parse_file(input_data):
         cases = np.append(cases, int(parsed_line[1]))
         deaths = np.append(deaths, int(parsed_line[2]))
         tests = np.append(tests, int(parsed_line[3]))
-    return [dates, cases, deaths, tests]
+        recovered = np.append(tests, int(parsed_line[4]))
+        hospitalized = np.append(tests, int(parsed_line[5]))
+    return [dates, cases, deaths, tests, recovered, hospitalized]
