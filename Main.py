@@ -1,6 +1,7 @@
 from FileParser import parse_file
 from Operations import difference
-from Operations import print_data
+from Operations import print_diff_data
+from Operations import print_gf_data
 from Operations import plot_graph
 from Operations import projection
 from Operations import compute_data
@@ -35,21 +36,21 @@ index   contents
 8	    % Cases
 9   	New Deaths
 10	    % Deaths
-11	    New Tests
-12	    % Tests
-13      New Recovered
-14      % Recovered
-15      New Hospitalized  
-16      % Hospitalized
+11      New Recovered
+12      % Recovered
+13      New Hospitalized  
+14      % Hospitalized
+15	    New Tests
+16	    % Tests
 '''
 
 def command_line():
     os.system('mode con cols=150')
     np.set_printoptions(suppress=True)
     iso_code_countries = {'USA':'USA_data.csv', 'PER':'PER_data.csv'}
-    header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Recovered', 'New Recovered', '%\u0394 Recovered',
-                    'Hospitalized', 'New Hospitalized', '%\u0394 Hospitalized', 'Tests', 'New Tests', '%\u0394 Tests']
-    instructions = ['load', 'show', 'show_all', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log',
+    header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Recov.', 'New Recov.', '%\u0394 Recov.',
+                    'Hospit.', 'New Hospit.', '%\u0394 Hospit.', 'Tests', 'New Tests', '%\u0394 Tests']
+    instructions = ['load', 'show_diff', 'show_gf', 'show_cases', 'show_deaths', 'show_tests', 'show_recovered', 'show_hospitalized', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log',
                    'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf', 'plot_recovered', 'plot_recovered_log', 'plot_recovered_gf', 'plot_hospitalized',
                    'plot_hospitalized_log', 'plot_hospitalized_gf', 'plot_all', 'update', 'fetch', 'export_csv', 'clear', 'exit', 'help']
     new_data = []
@@ -169,9 +170,18 @@ def command_line():
             print('Data has not been loaded into memory')
             continue
 
-        if(parsed_input[0] == 'show'):
-            print_data(header_fields, parsed_data)
+        if(parsed_input[0] == 'show_diff'):
+            print(parsed_data)
+            print_diff_data(header_fields, parsed_data)
             continue
+
+        if(parsed_input[0] == 'show_gf'):
+            print(parsed_data)
+            print_gf_data(header_fields, parsed_data)
+            continue
+
+        
+        
 
         if(parsed_input[0] == 'export_csv'):
             list_to_csv(parsed_data)
@@ -287,7 +297,7 @@ def command_line():
                 print("Usage: plot_tests")
                 print("       plot_tests [from day] [to_day]")
             elif(len(parsed_input) == 1):
-                plot_graph(parsed_data[6], parsed_data[3], 'g', "Days", "Tests", file_name + ": Tests as of " + parsed_data[0][len(parsed_data[0])-1])  
+                plot_graph(parsed_data[6], parsed_data[3], 'c', "Days", "Tests", file_name + ": Tests as of " + parsed_data[0][len(parsed_data[0])-1])  
             elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
                 print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
             elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
@@ -296,14 +306,14 @@ def command_line():
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
                 plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[3][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'g', "Days", "Tests", file_name + ": Tests from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+                   'c', "Days", "Tests", file_name + ": Tests from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
         if(parsed_input[0] == 'plot_tests_log'):
             if(len(parsed_input) != 1):
                 print("Usage: plot_tests_log")
             else:
-                plot_graph_log(parsed_data[6], parsed_data[3], 'g', "Days", "Tests", file_name + ": Tests as of " + parsed_data[0][len(parsed_data[0])-1])
+                plot_graph_log(parsed_data[6], parsed_data[3], 'c', "Days", "Tests", file_name + ": Tests as of " + parsed_data[0][len(parsed_data[0])-1])
             continue
 
         if(parsed_input[0] == 'plot_tests_gf'):
@@ -311,7 +321,7 @@ def command_line():
                 print("Usage: plot_tests_gf")
                 print("       plot_tests_gf [from day] [to_day]")
             elif(len(parsed_input) == 1):
-                plot_graph(parsed_data[6], parsed_data[12], 'g', "Days", "Tests Growth Ratio (%)", file_name + ": Tests Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
+                plot_graph(parsed_data[6], parsed_data[16], 'c', "Days", "Tests Growth Ratio (%)", file_name + ": Tests Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
             elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
                 print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
             elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
@@ -319,8 +329,8 @@ def command_line():
             elif(int(parsed_input[1]) > int(parsed_input[2])):
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
-                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[12][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'g', "Days", "Tests Growth Ratio (%)", file_name + ": Tests Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[16][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'c', "Days", "Tests Growth Ratio (%)", file_name + ": Tests Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
         if(parsed_input[0] == 'plot_recovered'):
@@ -352,48 +362,7 @@ def command_line():
                 print("Usage: plot_recovered_gf")
                 print("       plot_recovered_gf [from day] [to_day]")
             elif(len(parsed_input) == 1):
-                plot_graph(parsed_data[6], parsed_data[14], 'g', "Days", "Recovered Growth Ratio (%)", file_name + ": Recovered Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
-            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
-                print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
-            elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
-                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[6][len(parsed_data[0]) - 1])
-            elif(int(parsed_input[1]) > int(parsed_input[2])):
-                print("Range of days is invalid, starting day must be less than ending day")
-            else:
-                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[14][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'g', "Days", "Recovered Growth Ratio (%)", file_name + ": Recovered Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
-            continue
-
-        if(parsed_input[0] == 'plot_hospitalized'):
-            if(len(parsed_input) != 3 and len(parsed_input) != 1):
-                print("Usage: plot_hospitalized")
-                print("       plot_hospitalized [from day] [to_day]")
-            elif(len(parsed_input) == 1):
-                plot_graph(parsed_data[6], parsed_data[3], 'g', "Days", "Hospitalized", file_name + ": Hospitalized as of " + parsed_data[0][len(parsed_data[0])-1])  
-            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
-                print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
-            elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
-                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[6][len(parsed_data[0]) - 1])
-            elif(int(parsed_input[1]) > int(parsed_input[2])):
-                print("Range of days is invalid, starting day must be less than ending day")
-            else:
-                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[3][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'g', "Days", "Hospitalized", file_name + ": Hospitalized from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
-            continue
-
-        if(parsed_input[0] == 'plot_hospitalized_log'):
-            if(len(parsed_input) != 1):
-                print("Usage: plot_hospitalized_log")
-            else:
-                plot_graph_log(parsed_data[6], parsed_data[3], 'g', "Days", "Hospitalized", file_name + ": Hospitalized as of " + parsed_data[0][len(parsed_data[0])-1])
-            continue
-
-        if(parsed_input[0] == 'plot_hospitalized_gf'):
-            if(len(parsed_input) != 3 and len(parsed_input) != 1):
-                print("Usage: plot_hospitalized_gf")
-                print("       plot_hospitalized_gf [from day] [to_day]")
-            elif(len(parsed_input) == 1):
-                plot_graph(parsed_data[6], parsed_data[12], 'g', "Days", "Hospitalized Growth Ratio (%)", file_name + ": Hospitalized Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
+                plot_graph(parsed_data[6], parsed_data[12], 'g', "Days", "Recovered Growth Ratio (%)", file_name + ": Recovered Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
             elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
                 print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
             elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
@@ -402,7 +371,48 @@ def command_line():
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
                 plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[12][int(parsed_input[1]):int(parsed_input[2]) + 1], \
-                   'g', "Days", "Hospitalized Growth Ratio (%)", file_name + ": Hospitalized Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+                   'g', "Days", "Recovered Growth Ratio (%)", file_name + ": Recovered Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+            continue
+
+        if(parsed_input[0] == 'plot_hospitalized'):
+            if(len(parsed_input) != 3 and len(parsed_input) != 1):
+                print("Usage: plot_hospitalized")
+                print("       plot_hospitalized [from day] [to_day]")
+            elif(len(parsed_input) == 1):
+                plot_graph(parsed_data[6], parsed_data[5], 'm', "Days", "Hospitalized", file_name + ": Hospitalized as of " + parsed_data[0][len(parsed_data[0])-1])  
+            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
+                print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
+                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[6][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[1]) > int(parsed_input[2])):
+                print("Range of days is invalid, starting day must be less than ending day")
+            else:
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[5][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'm', "Days", "Hospitalized", file_name + ": Hospitalized from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
+            continue
+
+        if(parsed_input[0] == 'plot_hospitalized_log'):
+            if(len(parsed_input) != 1):
+                print("Usage: plot_hospitalized_log")
+            else:
+                plot_graph_log(parsed_data[6], parsed_data[3], 'm', "Days", "Hospitalized", file_name + ": Hospitalized as of " + parsed_data[0][len(parsed_data[0])-1])
+            continue
+
+        if(parsed_input[0] == 'plot_hospitalized_gf'):
+            if(len(parsed_input) != 3 and len(parsed_input) != 1):
+                print("Usage: plot_hospitalized_gf")
+                print("       plot_hospitalized_gf [from day] [to_day]")
+            elif(len(parsed_input) == 1):
+                plot_graph(parsed_data[6], parsed_data[14], 'm', "Days", "Hospitalized Growth Ratio (%)", file_name + ": Hospitalized Growth Ratio (%) as of " + parsed_data[0][len(parsed_data[0])-1])  
+            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
+                print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
+                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[6][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[1]) > int(parsed_input[2])):
+                print("Range of days is invalid, starting day must be less than ending day")
+            else:
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[14][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'm', "Days", "Hospitalized Growth Ratio (%)", file_name + ": Hospitalized Growth Ratio (%) from day " + parsed_data[0][int(parsed_input[1])] + " from " + parsed_data[0][int(parsed_input[2])])  
             continue
 
         if(parsed_input[0] == 'plot_all'):

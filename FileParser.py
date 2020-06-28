@@ -26,6 +26,6 @@ def parse_file(input_data):
         cases = np.append(cases, int(parsed_line[1]))
         deaths = np.append(deaths, int(parsed_line[2]))
         tests = np.append(tests, int(parsed_line[3]))
-        recovered = np.append(tests, int(parsed_line[4]))
-        hospitalized = np.append(tests, int(parsed_line[5]))
+        recovered = np.append(recovered, int(parsed_line[4]))
+        hospitalized = np.append(hospitalized, int(parsed_line[5]))
     return [dates, cases, deaths, tests, recovered, hospitalized]

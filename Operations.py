@@ -7,7 +7,10 @@ def calc_growth_factor(data1, data2):
     if(data2 == 0):
         return data1
     else:
-        return data1 / data2
+        if(data1 < data2):
+            return (data2 / data1) * -1
+        else:
+            return data1 / data2
 
 def compute_data(parsed_data):
     days = np.array([])
@@ -17,6 +20,10 @@ def compute_data(parsed_data):
     deaths_growth_factor = np.array([])
     new_tests = np.array([])
     tests_growth_factor = np.array([])
+    new_recovered = np.array([])
+    recovered_growth_factor = np.array([])
+    new_hospitalized = np.array([])
+    hospitalized_growth_factor = np.array([])
     for i, entry in enumerate(parsed_data[0]):
         if(i == 0):
             new_cases = np.append(new_cases, parsed_data[1][i] - 0)
@@ -25,6 +32,10 @@ def compute_data(parsed_data):
             deaths_growth_factor = np.append(deaths_growth_factor, 0)
             new_tests = np.append(new_tests, parsed_data[3][i] - 0)
             tests_growth_factor = np.append(tests_growth_factor, 0)
+            new_recovered = np.append(new_recovered, parsed_data[4][i] - 0)
+            recovered_growth_factor = np.append(recovered_growth_factor, 0)
+            new_hospitalized = np.append(new_hospitalized, parsed_data[5][i] - 0)
+            hospitalized_growth_factor = np.append(hospitalized_growth_factor, 0)
             days = np.append(days, i)
             continue
         new_cases = np.append(new_cases, parsed_data[1][i] - parsed_data[1][i-1])
@@ -33,12 +44,20 @@ def compute_data(parsed_data):
         deaths_growth_factor = np.append(deaths_growth_factor, calc_growth_factor(parsed_data[2][i], parsed_data[2][i-1]))
         new_tests = np.append(new_tests, parsed_data[3][i] - parsed_data[3][i-1])
         tests_growth_factor = np.append(tests_growth_factor, calc_growth_factor(parsed_data[3][i], parsed_data[3][i-1]))
+        new_recovered = np.append(new_recovered, parsed_data[4][i] - parsed_data[4][i-1])
+        recovered_growth_factor = np.append(recovered_growth_factor, calc_growth_factor(parsed_data[4][i], parsed_data[4][i-1]))
+        new_hospitalized = np.append(new_hospitalized, parsed_data[5][i] - parsed_data[5][i-1])
+        hospitalized_growth_factor = np.append(hospitalized_growth_factor, calc_growth_factor(parsed_data[5][i], parsed_data[5][i-1]))
         days = np.append(days, i)
     parsed_data.append(days)
     parsed_data.append(new_cases)
     parsed_data.append(cases_growth_factor)
     parsed_data.append(new_deaths)
     parsed_data.append(deaths_growth_factor)
+    parsed_data.append(new_recovered)
+    parsed_data.append(recovered_growth_factor)
+    parsed_data.append(new_hospitalized)
+    parsed_data.append(hospitalized_growth_factor)
     parsed_data.append(new_tests)
     parsed_data.append(tests_growth_factor)
     return parsed_data
@@ -115,24 +134,103 @@ def plot_graph_all(parsed_data, chart_title, from_day, to_day):
     plt.grid()
     plt.show()
 
-def print_data(header, data):
+def print_set(header, data, indexes):
     np.set_printoptions(precision=3)
+    '''
+    Header index    Data Index      Data
+    0               0               Date
+    1               6               Day
+    2               1               Cases
+    3               7               New Cases
+    4               8               % Cases
+    5               2               Deaths
+    6               9               New Deaths
+    7               10              % Deaths
+    8               4               Recovered
+    9               13              New Recovered
+    10              12              % Recovered
+    11              5               Hospitalized
+    12              15              New Hospitalized
+    13              14              % Hospitalized
+    14              3               Tests
+    15              11              New Tests
+    16              16              % Tests
+    '''
+    #TODO
+
+def print_diff_data(header, data):
+    np.set_printoptions(precision=3)
+    '''
+    Header index    Data Index      Data
+    0               0               Date
+    1               6               Day
+    2               1               Cases
+    3               7               New Cases
+    5               2               Deaths
+    6               9               New Deaths
+    8               4               Recovered
+    9               13              New Recovered
+    11              5               Hospitalized
+    12              15              New Hospitalized
+    14              3               Tests
+    15              11              New Tests
+    '''
     print('%10s'%(header[0]), end = '')
     print('%9s'%(header[1]), end = '')
     print('%13s'%(header[2]), end = '')
     print('%13s'%(header[3]), end = '')
-    print('%13s'%(header[4]), end = '')
     print('%13s'%(header[5]), end = '')
     print('%13s'%(header[6]), end = '')
-    print('%13s'%(header[7]), end = '')
     print('%13s'%(header[8]), end = '')
     print('%13s'%(header[9]), end = '')
-    print('%13s'%(header[10]))
+    print('%13s'%(header[11]), end = '')
+    print('%13s'%(header[12]), end = '')
+    print('%13s'%(header[14]), end = '')
+    print('%13s'%(header[15]))
     for i in range(len(data[0])):
-        print('%10s'%(data[0][i]), '%8s'%(data[4][i]), \
-            '%12s'%(data[1][i]), '%12s'%(data[5][i]), '%12s'%(round(data[6][i], 5)), \
-            '%12s'%(data[2][i]), '%12s'%(data[7][i]) , '%12s'%(round(data[2][i], 5)), \
-            '%12s'%(data[3][i]), '%12s'%(data[9][i]) , '%12s'%(round(data[10][i], 5)))
+        print('%10s'%(data[0][i]), '%8s'%(data[6][i]), 
+            '%12s'%(data[1][i]), '%12s'%(data[7][i]), 
+            '%12s'%(data[2][i]), '%12s'%(data[9][i]),
+            '%12s'%(data[4][i]), '%12s'%(data[13][i]),
+            '%12s'%(data[5][i]), '%12s'%(data[15][i]),
+            '%12s'%(data[3][i]), '%12s'%(data[11][i]))
+            
+def print_gf_data(header, data):
+    np.set_printoptions(precision=3)
+    '''
+    Header index    Data Index      Data
+    0               0               Date
+    1               6               Day
+    2               1               Cases
+    4               8               % Cases
+    5               2               Deaths
+    7               10              % Deaths
+    8               4               Recovered
+    10              12              % Recovered
+    11              5               Hospitalized
+    13              14              % Hospitalized
+    14              3               Tests
+    16              16              % Tests
+    '''
+    print('%10s'%(header[0]), end = '')
+    print('%9s'%(header[1]), end = '')
+    print('%13s'%(header[2]), end = '')
+    print('%13s'%(header[4]), end = '')
+    print('%13s'%(header[5]), end = '')
+    print('%13s'%(header[7]), end = '')
+    print('%13s'%(header[8]), end = '')
+    print('%13s'%(header[10]), end = '')
+    print('%13s'%(header[11]), end = '')
+    print('%13s'%(header[13]), end = '')
+    print('%13s'%(header[14]), end = '')
+    print('%13s'%(header[16]))
+    for i in range(len(data[0])):
+        print('%10s'%(data[0][i]), '%8s'%(data[6][i]), 
+            '%12s'%(data[1][i]), '%12s'%(str(data[8][i])[:8]), 
+            '%12s'%(data[2][i]), '%12s'%(str(data[10][i])[:8]),
+            '%12s'%(data[4][i]), '%12s'%(str(data[12][i])[:8]),
+            '%12s'%(data[5][i]), '%12s'%(str(data[14][i])[:8]),
+            '%12s'%(data[3][i]), '%12s'%(str(data[16][i])[:8]))
 
 def print_new_data(new_data):
     print('INDEX', '%14s'%('DATE'), '%11s'%('CASES'), '%11s'%('DEATHS'), '%11s'%('TESTS'), '%11s'%('RECOVERED'), '%11s'%('HOSPITAL'))
