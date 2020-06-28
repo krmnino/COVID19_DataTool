@@ -9,10 +9,10 @@ from Operations import plot_graph_log
 from Operations import plot_graph_all
 from Operations import print_new_data
 from Operations import update_country_data
-from USA_FetchData import fetch_data_usa
-from USA_FetchData import diff_raw_USA_data
-from PER_FetchData import fetch_data_peru
-from PER_FetchData import diff_raw_PER_data
+from FetchUpdateData import fetch_data_usa
+from FetchUpdateData import diff_raw_USA_data
+from FetchUpdateData import fetch_data_peru
+from FetchUpdateData import diff_raw_PER_data
 
 import os
 import platform
