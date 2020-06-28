@@ -21,7 +21,7 @@ def parse_file(input_data):
             int(parsed_line[5])
         except:
             print('Data contains invalid data. Cannot convert string to integer.')
-            return 0
+            return 1
         dates = np.append(dates, parsed_line[0])
         cases = np.append(cases, int(parsed_line[1]))
         deaths = np.append(deaths, int(parsed_line[2]))
