@@ -52,9 +52,10 @@ def command_line():
     iso_code_countries = {'USA':'USA_data.csv', 'PER':'PER_data.csv'}
     header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Recov.', 'New Recov.', '%\u0394 Recov.',
                     'Hospit.', 'New Hospit.', '%\u0394 Hospit.', 'Tests', 'New Tests', '%\u0394 Tests', 'Mort. %', 'Active']
-    instructions = ['load', 'show_diff', 'show_gf', 'show_cases', 'show_deaths', 'show_tests', 'show_recovered', 'show_hospitalized', 'delete', 'diff', 'projection', 'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log',
-                   'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf', 'plot_recovered', 'plot_recovered_log', 'plot_recovered_gf', 'plot_hospitalized',
-                   'plot_hospitalized_log', 'plot_hospitalized_gf', 'plot_all', 'update', 'fetch', 'export_csv', 'clear', 'exit', 'help']
+    instructions = ['load', 'show_diff', 'show_gf', 'show_cases', 'show_deaths', 'show_tests', 'show_recovered', 'show_hospitalized', 'delete', 'diff', 'projection',
+                    'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log', 'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf',
+                    'plot_recovered', 'plot_recovered_log', 'plot_recovered_gf', 'plot_hospitalized', 'plot_hospitalized_log', 'plot_hospitalized_gf', 'plot_all',
+                    'update', 'fetch', 'export_csv', 'clear', 'exit', 'help']
     new_data = []
     parsed_data = 0
     file_name = ''
@@ -81,16 +82,24 @@ def command_line():
                 print('Usage: help')
             else:
                 print('usage manual:')
-                print('load [FILE]                                      Load data set in memory')
-                print('show                                             Displays loaded data set')
-                print('show_all [next_days] [avg_previous_days]         Displays loaded data set and projection')
+                print('fetch [ISO_CODE]                                 Update raw data from external repo of selected country')
+                print('update [ISO_CODE]                                Update parsed data of selected country')
+                print('load [ISO_CODE]                                  Load data set in memory')
+                print('show_gf                                          Display growth factor (percent change) in cases, deaths, recovered, hospitalized, and tests')
+                print('show_cases                                       Display data related to number of cases')
+                print('show_deaths                                      Display data related to number of deaths')
+                print('show_tests                                       Display data related to number of tests')
+                print('show_recovered                                   Display data related to number of recoveries')
+                print('show_hospitalized                                Display data related to number of hospitalizations')
                 print('delete                                           Erase data set loaded in memory')
                 print('diff                                             Shows difference of values between 2 days')
                 print('projection [next_days] [avg_previous_days]       Show projection for the next x days using avg growth factor from y previous days')
-                print('plot_cases                                       Display cases graph')
+                print('plot_cases [from_day] [to_day]                   Display cases graph')
                 print('plot_cases_log                                   Display cases in a logarithmic graph')
-                print('plot_growth                                      Display growth rate graph')
-                print('plot_growth [from_day][to_day]                   Display growth rate graph from a range of days')
+                print('plot_cases_gf [from_day] [to_day]                Display cases growth factor graph')
+                print('plot_deaths [from_day] [to_day]                  Display deaths graph')
+                print('plot_deaths_log                                  Display deaths in a logarithmic graph')
+                print('plot_deaths_gf [from_day] [to_day]               Display deaths growth factor graph')
                 print('clear                                            Clears the console')
                 print('csv_format                                       Display .csv file format per columns')
                 print('help                                             Display program manual')
