@@ -59,7 +59,7 @@ def command_line():
     instructions = ['load', 'show_diff', 'show_gf', 'show_cases', 'show_deaths', 'show_tests', 'show_recovered', 'show_hospitalized', 'delete', 'diff', 'projection',
                     'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log', 'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf',
                     'plot_recovered', 'plot_recovered_log', 'plot_recovered_gf', 'plot_hospitalized', 'plot_hospitalized_log', 'plot_hospitalized_gf', 'plot_all',
-                    'update', 'fetch', '', 'export_csv', 'clear', 'exit', 'help', 'save_plot_cases']
+                    'update', 'fetch', 'save_plots', 'export_csv', 'clear', 'exit', 'help']
     new_data = []
     parsed_data = 0
     file_name = ''
@@ -104,8 +104,9 @@ def command_line():
                 print('plot_deaths [from_day] [to_day]                  Display deaths graph')
                 print('plot_deaths_log                                  Display deaths in a logarithmic graph')
                 print('plot_deaths_gf [from_day] [to_day]               Display deaths growth factor graph')
+                print('save_plots [from_day] [to_day]                   Save all graphs in PNG format')
                 print('clear                                            Clears the console')
-                print('csv_format                                       Display .csv file format per columns')
+                print('export_csv                                       Export .csv file with computed data')
                 print('help                                             Display program manual')
                 print('exit                                             Exit the program')
             continue
@@ -461,13 +462,32 @@ def command_line():
                     + parsed_data[0][int(parsed_input[2])], int(parsed_input[1]), int(parsed_input[2]))  
             continue
         
-        if(parsed_input[0] == 'save_plot_cases'):
+        if(parsed_input[0] == 'save_plots'):
             if(len(parsed_input) != 3 and len(parsed_input) != 1):
-                print("Usage: save_plot_cases")
-                print("       save_plot_cases [from day] [to_day]")
+                print("Usage: save_plots")
+                print("       save_plots [from day] [to_day]")
             elif(len(parsed_input) == 1):
                 plot_graph(parsed_data[6], parsed_data[1], 'b', "Days", "Cases", file_name + ": Cases as of " + parsed_data[0][len(parsed_data[0])-1], \
-                file_name='cases', save=True)  
+                    file_name='cases.png', save=True)
+                plot_graph(parsed_data[6], parsed_data[8], 'b', "Days", "Cases Growth Rate (%)", file_name + ": Cases Growth Rate (%) as of " + parsed_data[0][len(parsed_data[0])-1], \
+                    file_name='cases_gf.png', save=True)
+                plot_graph(parsed_data[6], parsed_data[2], 'r', "Days", "Deaths", file_name + ": Deaths as of " + parsed_data[0][len(parsed_data[0])-1], \
+                    file_name='deaths.png', save=True)
+                plot_graph(parsed_data[6], parsed_data[10], 'r', "Days", "Deaths Growth Rate (%)", file_name + ": Deaths Growth Rate (%) as of " + parsed_data[0][len(parsed_data[0])-1], \
+                    file_name='deaths_gf.png', save=True)  
+                plot_graph(parsed_data[6], parsed_data[3], 'c', "Days", "Tests", file_name + ": Tests as of " + parsed_data[0][len(parsed_data[0])-1], \
+                    file_name='tests.png', save=True)
+                plot_graph(parsed_data[6], parsed_data[16], 'c', "Days", "Tests Growth Rate (%)", file_name + ": Tests Growth Rate (%) as of " + parsed_data[0][len(parsed_data[0])-1], \
+                    file_name='tests_gf.png', save=True)
+                plot_graph(parsed_data[6], parsed_data[4], 'g', "Days", "Recovered", file_name + ": Recovered as of " + parsed_data[0][len(parsed_data[0])-1], \
+                    file_name='recovered.png', save=True)
+                plot_graph(parsed_data[6], parsed_data[12], 'g', "Days", "Recovered Growth Rate (%)", file_name + ": Recovered Growth Rate (%) as of " + parsed_data[0][len(parsed_data[0])-1], \
+                    file_name='recovered_gf.png', save=True)  
+                plot_graph(parsed_data[6], parsed_data[5], 'm', "Days", "Hospitalized", file_name + ": Hospitalized as of " + parsed_data[0][len(parsed_data[0])-1], \
+                    file_name='hospitalized.png', save=True)  
+                plot_graph(parsed_data[6], parsed_data[14], 'm', "Days", "Hospitalized Growth Rate (%)", file_name + ": Hospitalized Growth Rate (%) as of " + parsed_data[0][len(parsed_data[0])-1], \
+                    file_name='hospitalized_gf.png', save=True)  
+                print('Successfully generated graphs.')
             elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
                 print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
             elif(int(parsed_input[2]) > parsed_data[6][len(parsed_data[1]) - 1]):
@@ -477,7 +497,35 @@ def command_line():
             else:
                 plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[1][int(parsed_input[1]):int(parsed_input[2]) + 1], \
                    'b', "Days", "Cases", file_name + ": Cases from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
-                    file_name='cases_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])], save=True)  
+                    file_name='cases_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[8][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'b', "Days", "Cases Growth Rate (%)", file_name + ": Cases Growth Rate (%) from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
+                    file_name='cases_gf_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[2][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'r', "Days", "Deaths", file_name + ": Deaths from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
+                    file_name='deaths_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[10][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'r', "Days", "Deaths Growth Rate (%)", file_name + ": Deaths Growth Rate (%) from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
+                    file_name='deaths_gf_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[3][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'c', "Days", "Tests", file_name + ": Tests from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
+                    file_name='tests_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[16][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'c', "Days", "Tests Growth Rate (%)", file_name + ": Tests Growth Rate (%) from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
+                    file_name='tests_gf_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[4][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'g', "Days", "Recovered", file_name + ": Recovered from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
+                    file_name='recovered_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[12][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'g', "Days", "Recovered Growth Rate (%)", file_name + ": Recovered Growth Rate (%) from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
+                    file_name='recovered_gf_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[5][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'm', "Days", "Hospitalized", file_name + ": Hospitalized from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
+                    file_name='hospitalized_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[14][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'm', "Days", "Hospitalized Growth Rate (%)", file_name + ": Hospitalized Growth Rate (%) from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], \
+                    file_name='hospitalized_gf_from_' + parsed_data[0][int(parsed_input[1])] + '_to_' + parsed_data[0][int(parsed_input[2])] + '.png', save=True)
+                print('Successfully generated graphs.')
             continue
 
         print('Invalid input. For instructions  type "help".')

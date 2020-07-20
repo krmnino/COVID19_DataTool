@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import warnings
 from datetime import date
 from math import e
 
@@ -132,7 +133,8 @@ def plot_graph(x, y, color, x_label, y_label, chart_title, file_name='', save=Fa
     plt.ylabel(y_label)
     plt.grid()
     if(save):
-        plt.savefig('../export/graphs/' + file_name + '.png')
+        warnings.filterwarnings('ignore')
+        plt.savefig('../export/graphs/' + file_name)
     else:
         plt.show()
 
@@ -152,7 +154,8 @@ def plot_graph_all(parsed_data, chart_title, from_day, to_day, file_name='', sav
     plt.xlabel("Days")
     plt.grid()
     if(save):
-        plt.plotplt.savefig('../export/graphs/' + file_name + '.png')
+        warnings.filterwarnings('ignore')
+        plt.plotplt.savefig('../export/graphs/' + file_name)
     else:
         plt.show()
 
