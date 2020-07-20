@@ -131,9 +131,8 @@ def plot_graph(x, y, color, x_label, y_label, chart_title, file_name='', save=Fa
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.grid()
-    plt.show()
     if(save):
-        plt.plotplt.savefig('../res/graphs/' + file_name + '.png')
+        plt.savefig('../export/graphs/' + file_name + '.png')
     else:
         plt.show()
 
@@ -153,7 +152,7 @@ def plot_graph_all(parsed_data, chart_title, from_day, to_day, file_name='', sav
     plt.xlabel("Days")
     plt.grid()
     if(save):
-        plt.plotplt.savefig('../res/graphs/' + file_name + '.png')
+        plt.plotplt.savefig('../export/graphs/' + file_name + '.png')
     else:
         plt.show()
 
