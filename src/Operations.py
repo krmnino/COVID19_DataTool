@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 from datetime import date
 from math import e
 
@@ -152,19 +153,19 @@ def plot_graph_all(parsed_data, chart_title, from_day, to_day):
 
 def print_cases(header, data):
     np.set_printoptions(precision=3)
-    print('%13s'%(header[0]), end = '')
-    print('%13s'%(header[1]), end = '')
+    print('%10s'%(header[0]), end = '')
+    print('%9s'%(header[1]), end = '')
     print('%13s'%(header[2]), end = '')
     print('%13s'%(header[3]), end = '')
     print('%13s'%(header[4]), end = '')
     print('%13s'%(header[18]))
     for i in range(len(data[0])):
-        print('%10s'%(data[0][i]), '%8s'%(data[6][i]), '%12s'%(data[1][i]), '%12s'%(data[7][i]), '%12s'%(data[8][i]), '%12s'%(data[18][i]))
+        print('%10s'%(data[0][i]), '%8s'%(data[6][i]), '%12s'%(data[1][i]), '%12s'%(data[7][i]), '%12s'%(str(data[8][i])[:8]), '%12s'%(data[18][i]))
 
 def print_deaths(header, data):
     np.set_printoptions(precision=3)
-    print('%13s'%(header[0]), end = '')
-    print('%13s'%(header[1]), end = '')
+    print('%10s'%(header[0]), end = '')
+    print('%9s'%(header[1]), end = '')
     print('%13s'%(header[5]), end = '')
     print('%13s'%(header[6]), end = '')
     print('%13s'%(header[7]), end = '')
@@ -174,8 +175,8 @@ def print_deaths(header, data):
     
 def print_tests(header, data):
     np.set_printoptions(precision=3)
-    print('%13s'%(header[0]), end = '')
-    print('%13s'%(header[1]), end = '')
+    print('%10s'%(header[0]), end = '')
+    print('%9s'%(header[1]), end = '')
     print('%13s'%(header[14]), end = '')
     print('%13s'%(header[15]), end = '')
     print('%13s'%(header[16]))
@@ -184,8 +185,8 @@ def print_tests(header, data):
 
 def print_recovered(header, data):
     np.set_printoptions(precision=3)
-    print('%13s'%(header[0]), end = '')
-    print('%13s'%(header[1]), end = '')
+    print('%10s'%(header[0]), end = '')
+    print('%9s'%(header[1]), end = '')
     print('%13s'%(header[8]), end = '')
     print('%13s'%(header[9]), end = '')
     print('%13s'%(header[10]))
@@ -194,8 +195,8 @@ def print_recovered(header, data):
 
 def print_hospitalized(header, data):
     np.set_printoptions(precision=3)
-    print('%13s'%(header[0]), end = '')
-    print('%13s'%(header[1]), end = '')
+    print('%10s'%(header[0]), end = '')
+    print('%9s'%(header[1]), end = '')
     print('%13s'%(header[11]), end = '')
     print('%13s'%(header[12]), end = '')
     print('%13s'%(header[13]))
@@ -289,11 +290,11 @@ def print_new_data(new_data):
 def list_to_csv(parsed_data):
     file_name = 'out_data_' + date.today().strftime('%Y-%m-%d') + '.csv'
     try:
-        open('export/' + file_name, 'w')
+        open(os.path.dirname(os.path.abspath(__file__)) + '/../export/' + file_name, 'w')
     except:
         print('Could not export processed data.')
         return 
-    out_file = open('export/' + file_name, 'w')
+    out_file = open(os.path.dirname(os.path.abspath(__file__)) + '/../export/' + file_name, 'w')
     out_file.write('Date,Day,Cases,NewCases,D%Cases,ActiveCases,Deaths,NewDeaths,D%Deaths,MortalityRate,Tests,\
         NewTests,D%Tests,Recovered,NewRecovered,D%Recovered,Hospitalized,NewHospitalized,D%Hospitalized\n')
     for i in range(0, len(parsed_data[0])-1):
@@ -309,12 +310,12 @@ def list_to_csv(parsed_data):
 
 def update_country_data(file_name, max_index, new_data):
     try:
-        open('data/' + file_name, 'a')
+        open(os.path.dirname(os.path.abspath(__file__)) + '/../data/' + file_name, 'a')
     except:
         print('Could not access', file_name)
         return False
     else:
-        with open('data/' + file_name, 'a') as file:
+        with open(os.path.dirname(os.path.abspath(__file__)) + '/../data/' + file_name, 'a') as file:
             for i in range(0, max_index + 1):
                 file.writelines(new_data[i].to_csv())
             return True

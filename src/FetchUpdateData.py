@@ -14,20 +14,20 @@ def fetch_data_usa():
         return
     else:
         req_data = requests.get(src_url).text
-        out = open('fetch/raw_USA.csv', 'w')
+        out = open(os.path.dirname(os.path.abspath(__file__)) + '/../fetch/raw_USA.csv', 'w')
         out.write(req_data)
         out.close()
 
 def diff_raw_USA_data():
     try:
-        open('fetch/raw_USA.csv', 'r')
-        open('data/USA_data.csv')
+        open(os.path.dirname(os.path.abspath(__file__)) + '/../fetch/raw_USA.csv', 'r')
+        open(os.path.dirname(os.path.abspath(__file__)) + '/../data/USA_data.csv')
     except:
         print('Could not access USA raw/parsed data file.')
         return
     else:
-        country_file = open('data/USA_data.csv')
-        raw_data_file = open('fetch/raw_USA.csv', 'r')
+        country_file = open(os.path.dirname(os.path.abspath(__file__)) + '/../data/USA_data.csv')
+        raw_data_file = open(os.path.dirname(os.path.abspath(__file__)) + '/../fetch/raw_USA.csv', 'r')
         last_line = ''
         for line in country_file:
             last_line = line
@@ -59,20 +59,20 @@ def fetch_data_peru():
         return
     else:
         req_data = requests.get(src_url).text
-        out = open('fetch/raw_PER.csv', 'w')
+        out = open(os.path.dirname(os.path.abspath(__file__)) + '/../fetch/raw_PER.csv', 'w')
         out.write(req_data)
         out.close()
 
 def diff_raw_PER_data():
     try:
-        open('fetch/raw_PER.csv', 'r')
-        open('data/PER_data.csv')
+        open(os.path.dirname(os.path.abspath(__file__)) + '/../fetch/raw_PER.csv', 'r')
+        open(os.path.dirname(os.path.abspath(__file__)) + '/../data/PER_data.csv')
     except:
         print('Could not access PER raw/parsed data file.')  
         return      
     else:
-        country_file = open('data/PER_data.csv')
-        raw_data_file = open('fetch/raw_PER.csv', 'r')
+        country_file = open(os.path.dirname(os.path.abspath(__file__)) + '/../data/PER_data.csv')
+        raw_data_file = open(os.path.dirname(os.path.abspath(__file__)) + '/../fetch/raw_PER.csv', 'r')
         last_line = ''
         for line in country_file:
             last_line = line
