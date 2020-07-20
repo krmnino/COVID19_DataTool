@@ -121,35 +121,41 @@ def projection(next_days, days_passed, parsed_data):
     print("Prediction # of cases in the next", next_days, "days:", round(total_cases))
     print("Prediction # of deaths in the next", next_days, "days:", round(total_deaths))
 
-def plot_graph(x, y, color, x_label, y_label, chart_title):
+def plot_graph(x, y, color, x_label, y_label, chart_title, file_name='', save=False, log_view=False):
+    plt.figure(figsize=(14,10))
+    plt.ticklabel_format(style='plain')
+    plt.title(chart_title, fontdict={'fontsize' : 25})
+    if(log_view):
+        plt.yscale('log')
     plt.plot(x, y, 'ko', x, y, color)
-    plt.title(chart_title)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.grid()
     plt.show()
+    if(save):
+        plt.plotplt.savefig('../res/graphs/' + file_name + '.png')
+    else:
+        plt.show()
 
-def plot_graph_log(x, y, color, x_label, y_label, chart_title):
-    plt.plot(x, y, 'ko', x, y, color)
-    plt.yscale('log')
-    plt.title(chart_title)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    plt.grid()
-    plt.show()
-
-def plot_graph_all(parsed_data, chart_title, from_day, to_day):
+def plot_graph_all(parsed_data, chart_title, from_day, to_day, file_name='', save=False):
+    plt.figure(figsize=(14,10))
+    plt.ticklabel_format(style='plain')
+    plt.title(chart_title, fontdict={'fontsize' : 25})
     plt.plot(parsed_data[4][from_day:to_day], parsed_data[1][from_day:to_day], 'ko')
     plt.plot(parsed_data[4][from_day:to_day], parsed_data[1][from_day:to_day], 'b', label = "Cases")
     plt.plot(parsed_data[4][from_day:to_day], parsed_data[2][from_day:to_day], 'ko')
     plt.plot(parsed_data[4][from_day:to_day], parsed_data[2][from_day:to_day], 'r', label = "Deaths")
-    plt.plot(parsed_data[4][from_day:to_day], parsed_data[3][from_day:to_day], 'ko')
-    plt.plot(parsed_data[4][from_day:to_day], parsed_data[3][from_day:to_day], 'g', label = "Tests")
+    plt.plot(parsed_data[4][from_day:to_day], parsed_data[4][from_day:to_day], 'ko')
+    plt.plot(parsed_data[4][from_day:to_day], parsed_data[4][from_day:to_day], 'g', label = "Recovered")
+    plt.plot(parsed_data[4][from_day:to_day], parsed_data[18][from_day:to_day], 'ko')
+    plt.plot(parsed_data[4][from_day:to_day], parsed_data[18][from_day:to_day], 'k', label = "Active Cases")
     plt.legend(loc="upper left")
-    plt.title(chart_title)
     plt.xlabel("Days")
     plt.grid()
-    plt.show()
+    if(save):
+        plt.plotplt.savefig('../res/graphs/' + file_name + '.png')
+    else:
+        plt.show()
 
 def print_cases(header, data):
     np.set_printoptions(precision=3)

@@ -2,12 +2,15 @@ from FileParser import parse_file
 from Operations import difference
 from Operations import print_diff_data
 from Operations import print_cases
+from Operations import print_deaths
+from Operations import print_tests
+from Operations import print_recovered
+from Operations import print_hospitalized
 from Operations import print_gf_data
 from Operations import plot_graph
 from Operations import projection
 from Operations import compute_data
 from Operations import list_to_csv
-from Operations import plot_graph_log
 from Operations import plot_graph_all
 from Operations import print_new_data
 from Operations import update_country_data
@@ -56,7 +59,7 @@ def command_line():
     instructions = ['load', 'show_diff', 'show_gf', 'show_cases', 'show_deaths', 'show_tests', 'show_recovered', 'show_hospitalized', 'delete', 'diff', 'projection',
                     'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log', 'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf',
                     'plot_recovered', 'plot_recovered_log', 'plot_recovered_gf', 'plot_hospitalized', 'plot_hospitalized_log', 'plot_hospitalized_gf', 'plot_all',
-                    'update', 'fetch', 'export_csv', 'clear', 'exit', 'help']
+                    'update', 'fetch', '', 'export_csv', 'clear', 'exit', 'help']
     new_data = []
     parsed_data = 0
     file_name = ''
@@ -188,6 +191,21 @@ def command_line():
 
         if(parsed_input[0] == 'show_cases'):
             print_cases(header_fields, parsed_data)
+            
+        if(parsed_input[0] == 'show_deaths'):
+            print_deaths(header_fields, parsed_data)
+            continue
+            
+        if(parsed_input[0] == 'show_tests'):
+            print_tests(header_fields, parsed_data)
+            continue
+        
+        if(parsed_input[0] == 'show_recovered'):
+            print_recovered(header_fields, parsed_data)
+            continue
+
+        if(parsed_input[0] == 'show_hospitalized'):
+            print_hospitalized(header_fields, parsed_data)
             continue
 
         if(parsed_input[0] == 'show_gf'):
@@ -242,7 +260,7 @@ def command_line():
             if(len(parsed_input) != 1):
                 print("Usage: plot_cases_log")
             else:
-                plot_graph_log(parsed_data[6], parsed_data[1], 'b', "Days", "Cases", file_name + ": Cases as of " + parsed_data[0][len(parsed_data[0])-1])
+                plot_graph(parsed_data[6], parsed_data[1], 'b', "Days", "Cases", file_name + ": Cases as of " + parsed_data[0][len(parsed_data[0])-1], log_view=True)
             continue
 
         if(parsed_input[0] == 'plot_cases_gf'):
@@ -283,7 +301,7 @@ def command_line():
             if(len(parsed_input) != 1):
                 print("Usage: plot_deaths_log")
             else:
-                plot_graph_log(parsed_data[6], parsed_data[2], 'r', "Days", "Deaths", file_name + ": Deaths as of " + parsed_data[0][len(parsed_data[0])-1])
+                plot_graph(parsed_data[6], parsed_data[2], 'r', "Days", "Deaths", file_name + ": Deaths as of " + parsed_data[0][len(parsed_data[0])-1], log_view=True)
             continue
 
         if(parsed_input[0] == 'plot_deaths_gf'):
@@ -324,7 +342,7 @@ def command_line():
             if(len(parsed_input) != 1):
                 print("Usage: plot_tests_log")
             else:
-                plot_graph_log(parsed_data[6], parsed_data[3], 'c', "Days", "Tests", file_name + ": Tests as of " + parsed_data[0][len(parsed_data[0])-1])
+                plot_graph(parsed_data[6], parsed_data[3], 'c', "Days", "Tests", file_name + ": Tests as of " + parsed_data[0][len(parsed_data[0])-1], log_view=True)
             continue
 
         if(parsed_input[0] == 'plot_tests_gf'):
@@ -365,7 +383,7 @@ def command_line():
             if(len(parsed_input) != 1):
                 print("Usage: plot_recovered_log")
             else:
-                plot_graph_log(parsed_data[6], parsed_data[4], 'g', "Days", "Recovered", file_name + ": Recovered as of " + parsed_data[0][len(parsed_data[0])-1])
+                plot_graph(parsed_data[6], parsed_data[4], 'g', "Days", "Recovered", file_name + ": Recovered as of " + parsed_data[0][len(parsed_data[0])-1], log_view=True)
             continue
 
         if(parsed_input[0] == 'plot_recovered_gf'):
@@ -406,7 +424,7 @@ def command_line():
             if(len(parsed_input) != 1):
                 print("Usage: plot_hospitalized_log")
             else:
-                plot_graph_log(parsed_data[6], parsed_data[3], 'm', "Days", "Hospitalized", file_name + ": Hospitalized as of " + parsed_data[0][len(parsed_data[0])-1])
+                plot_graph(parsed_data[6], parsed_data[3], 'm', "Days", "Hospitalized", file_name + ": Hospitalized as of " + parsed_data[0][len(parsed_data[0])-1], log_view=True)
             continue
 
         if(parsed_input[0] == 'plot_hospitalized_gf'):
@@ -431,7 +449,7 @@ def command_line():
                 print("Usage: plot_all")
                 print("       plot_all [from day] [to_day]")
             elif(len(parsed_input) == 1):
-                plot_graph_all(parsed_data, file_name + ": Cases, Deaths, and Tests as of " + parsed_data[0][len(parsed_data[0])-1], 0, len(parsed_data[0])-1)  
+                plot_graph_all(parsed_data, file_name + ": Cases, Deaths, Recovered, Active Cases as of " + parsed_data[0][len(parsed_data[0])-1], 0, len(parsed_data[0])-1)  
             elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
                 print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
             elif(int(parsed_input[2]) > parsed_data[1][len(parsed_data[1]) - 1]):
@@ -439,10 +457,12 @@ def command_line():
             elif(int(parsed_input[1]) > int(parsed_input[2])):
                 print("Range of days is invalid, starting day must be less than ending day")
             else:
-                plot_graph_all(parsed_data, file_name + ": Cases, Deaths, and Tests from " + parsed_data[0][int(parsed_input[1])] + " to " \
+                plot_graph_all(parsed_data, file_name + ": Cases, Deaths, Recovered, Active Cases from " + parsed_data[0][int(parsed_input[1])] + " to " \
                     + parsed_data[0][int(parsed_input[2])], int(parsed_input[1]), int(parsed_input[2]))  
             continue
-            
+        
+        if(parsed_input[0] == 'save_plot_cases'):
+            continue
 
         print('Invalid input. For instructions  type "help".')
         
