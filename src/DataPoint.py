@@ -28,6 +28,3 @@ class DataPoint:
     def to_csv(self):
         return self.date + ',' + str(self.cases) + ',' + str(self.deaths) + ',' + \
         str(self.tests) + ',' + str(self.recovered) + ',' + str(self.hospitalized) + "\n"
-
-
-

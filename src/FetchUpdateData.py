@@ -93,3 +93,4 @@ def diff_raw_PER_data():
                 new_data.append(DataPoint(parsed_line[0], int(parsed_line[1]), int(parsed_line[2]),
                 int(parsed_line[3]), int(parsed_line[4]),int(parsed_line[5])))
         return new_data
+        

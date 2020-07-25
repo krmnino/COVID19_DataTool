@@ -357,3 +357,4 @@ def update_country_data(file_name, max_index, new_data):
                 file.writelines(new_data[i].to_csv())
             return True
         file.close()
+        

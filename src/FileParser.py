@@ -29,3 +29,4 @@ def parse_file(input_data):
         recovered = np.append(recovered, int(parsed_line[4]))
         hospitalized = np.append(hospitalized, int(parsed_line[5]))
     return [dates, cases, deaths, tests, recovered, hospitalized]
+    
