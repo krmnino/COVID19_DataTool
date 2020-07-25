@@ -192,6 +192,7 @@ def command_line():
 
         if(parsed_input[0] == 'show_cases'):
             print_cases(header_fields, parsed_data)
+            continue
             
         if(parsed_input[0] == 'show_deaths'):
             print_deaths(header_fields, parsed_data)
