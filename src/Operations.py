@@ -103,24 +103,53 @@ def difference(parsed_data, day1, day2):
 def projection(next_days, days_passed, parsed_data):
     total_cases = float(parsed_data[1][len(parsed_data[1])-1])
     total_deaths = float(parsed_data[2][len(parsed_data[2])-1])
+    total_tests = float(parsed_data[3][len(parsed_data[4])-1])
+    total_recovered = float(parsed_data[4][len(parsed_data[4])-1])
+    total_hospitalized = float(parsed_data[5][len(parsed_data[5])-1])
+    total_active = float(parsed_data[18][len(parsed_data[18])-1])
     counter = 0
     avg_cases_gf = 0.0
     avg_deaths_gf = 0.0
+    avg_tests_gf = 0.0
+    avg_recovered_gf = 0.0
+    avg_hospitalized_gf = 0.0
+    avg_active_gf = 0.0
     while(counter < days_passed):
-        avg_cases_gf += parsed_data[6][len(parsed_data[6]) - 1 - counter]
-        avg_deaths_gf += parsed_data[8][len(parsed_data[8]) - 1 - counter]
+        avg_cases_gf += parsed_data[8][len(parsed_data[8]) - 1 - counter]
+        avg_deaths_gf += parsed_data[10][len(parsed_data[10]) - 1 - counter]
+        avg_tests_gf += parsed_data[16][len(parsed_data[16]) - 1 - counter]
+        avg_recovered_gf += parsed_data[12][len(parsed_data[12]) - 1 - counter]
+        avg_hospitalized_gf += parsed_data[14][len(parsed_data[14]) - 1 - counter]
+        avg_active_gf += parsed_data[18][len(parsed_data[18]) - 1 - counter]
         counter += 1
     avg_cases_gf /= days_passed
     avg_deaths_gf /= days_passed
+    avg_tests_gf /= days_passed
+    avg_recovered_gf /= days_passed
+    avg_hospitalized_gf /= days_passed
+    avg_active_gf /= days_passed
     print('Avg Cases Growth Factor (past', days_passed ,'days):', round(avg_cases_gf, 5))
     print('Avg Deaths Growth Factor (past', days_passed ,'days):', round(avg_deaths_gf, 5))
+    print('Avg Tests Growth Factor (past', days_passed ,'days):', round(avg_tests_gf, 5))
+    print('Avg Recovered Growth Factor (past', days_passed ,'days):', round(avg_recovered_gf, 5))
+    print('Avg Hospitalized Growth Factor (past', days_passed ,'days):', round(avg_hospitalized_gf, 5))
+    print('Avg Active Cases Growth Factor (past', days_passed ,'days):', round(avg_active_gf, 5))
     counter = 0
     while(counter < next_days):
         total_cases = total_cases * avg_cases_gf
         total_deaths = total_deaths * avg_deaths_gf
+        total_tests = total_tests * avg_tests_gf
+        total_recovered = total_recovered * avg_recovered_gf
+        total_hospitalized = total_hospitalized * avg_hospitalized_gf
+        total_active = total_active * avg_active_gf
         counter += 1
-    print("Prediction # of cases in the next", next_days, "days:", round(total_cases))
-    print("Prediction # of deaths in the next", next_days, "days:", round(total_deaths))
+    print("Projections for the next", next_days, "days:")
+    print("Cases:", round(total_cases))
+    print("Active:", round(total_active))
+    print("Deaths:", round(total_deaths))
+    print("Tests:", round(total_tests))
+    print("Recovered:", round(total_recovered))
+    print("Hospitalized:", round(total_hospitalized))
 
 def plot_graph(x, y, color, x_label, y_label, chart_title, file_name='', save=False, log_view=False):
     plt.figure(figsize=(14,10))
