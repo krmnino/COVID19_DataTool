@@ -51,7 +51,7 @@ def diff_raw_USA_data():
         return new_data
 
 def fetch_data_peru():
-    src_url = 'https://raw.githubusercontent.com/krmnino/Peru_COVID19_Stats/master/PER_data.csv'
+    src_url = 'https://raw.githubusercontent.com/krmnino/Peru_COVID19_OpenData/master/data/PER_data.csv'
     try:
         req_data = requests.get(src_url).text
     except:
