@@ -60,6 +60,7 @@ def command_line():
                     'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log', 'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf',
                     'plot_recovered', 'plot_recovered_log', 'plot_recovered_gf', 'plot_hospitalized', 'plot_hospitalized_log', 'plot_hospitalized_gf', 'plot_all',
                     'update', 'fetch', 'save_plots', 'export_csv', 'clear', 'exit', 'help']
+    print(len(instructions))
     new_data = []
     parsed_data = 0
     file_name = ''
@@ -105,6 +106,16 @@ def command_line():
                 print('plot_deaths [from_day] [to_day]                  Display deaths graph')
                 print('plot_deaths_log                                  Display deaths in a logarithmic graph')
                 print('plot_deaths_gf [from_day] [to_day]               Display deaths growth factor graph')
+                print('plot_tests [from_day] [to_day]                   Display tests graph')
+                print('plot_tests_log                                   Display tests in a logarithmic graph')
+                print('plot_tests_gf                                    Display tests growth factor graph')
+                print('plot_recovered [from_day] [to_day]               Display recovered graph')
+                print('plot_recovered_log                               Display recovered in a logarithmic graph')
+                print('plot_recovered_gf                                Display recovered growth factor graph')
+                print('plot_hospitalized [from_day] [to_day]            Display hospitalized graph')
+                print('plot_hospitalized_log                            Display hospitalized in a logarithmic graph')
+                print('plot_hospitalized_gf                             Display hospitalized growth factor graph')
+                print('plot_all [from_day] [to_day]                     Display confirmed/active cases, deaths and recovered graphs')
                 print('save_plots [from_day] [to_day]                   Save all graphs in PNG format')
                 print('clear                                            Clears the console')
                 print('export_csv                                       Export .csv file with computed data')
