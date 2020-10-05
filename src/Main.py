@@ -57,10 +57,9 @@ def command_line():
     header_fields = ['Date', 'Day', 'Cases', 'New Cases', '%\u0394 Cases', 'Deaths', 'New Deaths', '%\u0394 Deaths', 'Recov.', 'New Recov.', '%\u0394 Recov.',
                     'Hospit.', 'New Hospit.', '%\u0394 Hospit.', 'Tests', 'New Tests', '%\u0394 Tests', 'Mort. %', 'Active']
     instructions = ['load', 'show_diff', 'show_gf', 'show_cases', 'show_deaths', 'show_tests', 'show_recovered', 'show_hospitalized', 'delete', 'diff', 'projection',
-                    'plot_cases', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log', 'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf',
+                    'plot_cases', 'plot_cases_trend', 'plot_cases_log', 'plot_cases_gf', 'plot_deaths', 'plot_deaths_log', 'plot_deaths_gf', 'plot_tests', 'plot_tests_log', 'plot_tests_gf',
                     'plot_recovered', 'plot_recovered_log', 'plot_recovered_gf', 'plot_hospitalized', 'plot_hospitalized_log', 'plot_hospitalized_gf', 'plot_all',
                     'update', 'fetch', 'save_plots', 'export_csv', 'clear', 'exit', 'help']
-    print(len(instructions))
     new_data = []
     parsed_data = 0
     file_name = ''
@@ -101,6 +100,7 @@ def command_line():
                 print('diff                                             Shows difference of values between 2 days')
                 print('projection [next_days] [avg_previous_days]       Show projection for the next x days using avg growth factor from y previous days')
                 print('plot_cases [from_day] [to_day]                   Display cases graph')
+                print('plot_cases_trend [from_day] [to_day]             Display cases graph with trendline')
                 print('plot_cases_log                                   Display cases in a logarithmic graph')
                 print('plot_cases_gf [from_day] [to_day]                Display cases growth factor graph')
                 print('plot_deaths [from_day] [to_day]                  Display deaths graph')
@@ -268,6 +268,23 @@ def command_line():
             else:
                 plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[1][int(parsed_input[1]):int(parsed_input[2]) + 1], \
                    'b', "Days", "Cases", file_name + ": Cases from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])])  
+            continue
+
+        if(parsed_input[0] == 'plot_cases_trend'):
+            if(len(parsed_input) != 3 and len(parsed_input) != 1):
+                print("Usage: plot_cases_trend")
+                print("       plot_cases_trend [from day] [to_day]")
+            elif(len(parsed_input) == 1):
+                plot_graph(parsed_data[6], parsed_data[1], 'b', "Days", "Cases", file_name + ": Cases as of " + parsed_data[0][len(parsed_data[0])-1], trend=True)  
+            elif(not parsed_input[1].isdigit() or not parsed_input[2].isdigit()):
+                print("Days must be integers. Ranging 0 -", parsed_data[6][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[2]) > parsed_data[6][len(parsed_data[1]) - 1]):
+                print("range of days is invalid, days must fall between the range: 0 -", parsed_data[6][len(parsed_data[0]) - 1])
+            elif(int(parsed_input[1]) > int(parsed_input[2])):
+                print("Range of days is invalid, starting day must be less than ending day")
+            else:
+                plot_graph(parsed_data[6][int(parsed_input[1]):int(parsed_input[2]) + 1], parsed_data[1][int(parsed_input[1]):int(parsed_input[2]) + 1], \
+                   'b', "Days", "Cases", file_name + ": Cases from day " + parsed_data[0][int(parsed_input[1])] + " to " + parsed_data[0][int(parsed_input[2])], trend=True)  
             continue
 
         if(parsed_input[0] == 'plot_cases_log'):

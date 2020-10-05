@@ -151,12 +151,34 @@ def projection(next_days, days_passed, parsed_data):
     print("Recovered:", round(total_recovered))
     print("Hospitalized:", round(total_hospitalized))
 
-def plot_graph(x, y, color, x_label, y_label, chart_title, file_name='', save=False, log_view=False):
+def linear_regression(x, y):
+    x_nums = [i for i in range(0, len(x))] #create list of integers given that original x are string values
+    n = len(x_nums) #number of elements in x axis (same as y axis)
+    add_x = sum(x_nums)   #add all x axis elements
+    add_y = sum(y)   #add all y axis elements
+    add_x_sqr = sum([i**2 for i in x_nums]) #add all y axis elements squared
+    add_xy = sum([x_nums[i] * y[i] for i in range(0, n)]) #add the product of each corresponding pair from x_nums and y
+    slope = (n * add_xy - add_x * add_y) / (n * add_x_sqr - add_x**2) #compute slope of linear regression 
+    y_intercept = (add_y * add_x_sqr - add_x * add_xy) / (n * add_x_sqr - add_x**2) #compute the y intercept of the linear regression
+    lin_reg_x = [i for i in range(0, len(x_nums))] #create list of elements from 0 to length of x_nums 
+    lin_reg_y = [slope * i + y_intercept for i in lin_reg_x] #replace x value in equation to find the y in linear regression
+    return [slope, y_intercept, lin_reg_y] #return slope, y_intercept, and linear regression list for y
+
+def plot_graph(x, y, color, x_label, y_label, chart_title, file_name='', save=False, log_view=False, trend=False):
     plt.figure(figsize=(14,10))
     plt.ticklabel_format(style='plain')
     plt.title(chart_title, fontdict={'fontsize' : 25})
     if(log_view):
         plt.yscale('log')
+    if(trend):
+        lin_reg_result = linear_regression(x, y)
+        lin_reg_equation = str(lin_reg_result[0])[:10] + 'X '
+        if(lin_reg_result[1] >= 0):
+            lin_reg_equation += '+'
+        lin_reg_equation += str(lin_reg_result[1])[:10]
+
+        plt.plot(x, lin_reg_result[2], color + '--', label = lin_reg_equation)
+        plt.legend(loc='upper left')
     plt.plot(x, y, 'ko', x, y, color)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
